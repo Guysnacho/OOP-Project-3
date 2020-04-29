@@ -513,27 +513,35 @@ public class Main{
         }
     }
 
-    public static void bullsEyeTwo(ArrayList<Player> players){
+    public static void bullsEyeTwo(ArrayList<Player> players, int livingPlayers){
         System.out.println("You've got a free shot, to the left or right? (l/r)- ");
-        if(input.getChar() == 'l'){
-            //Go backwards until a live player is found
-            for(int c = players.size()-1; c > 0; c--){
-                if(players.get(c).getHealth() > 0){
-                    players.get(c).takeHit();
-                    checkPlayer(players.get(c));
-                    break;
+
+        //Check if there are enough players
+        if(livingPlayers > 4){
+            if(input.getChar() == 'l'){
+                //Go backwards until a live player is found
+                for(int c = players.size()-1; c > 0; c--){
+                    if(players.get(c).getHealth() > 0){
+                        players.get(c).takeHit();
+                        checkPlayer(players.get(c));
+                        break;
+                    }
+                }
+            } else {
+                //Go forward until a live player is found
+                for(int c = 0; c < players.size(); c++){
+                    if(players.get(c).getHealth() > 0){
+                        players.get(c).takeHit();
+                        checkPlayer(players.get(c));
+                        break;
+                    }
                 }
             }
         } else {
-            //Go forward until a live player is found
-            for(int c = 0; c < players.size(); c++){
-                if(players.get(c).getHealth() > 0){
-                    players.get(c).takeHit();
-                    checkPlayer(players.get(c));
-                    break;
-                }
-            }
+            //If there aren't enough players, run Bulls Eye 1
+            bullsEyeOne(players);
         }
+
     }
 
     //Checks if there are any arrows since they must be resolved immediately
