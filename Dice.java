@@ -7,6 +7,7 @@ public class Dice{
 
     //Array to hold the names of the faces
     String[] faces = new String[6];
+    int currentFace;
     int type;
     public Dice(int selection){
         type = selection;
@@ -56,9 +57,9 @@ public class Dice{
     //Multiple ways to know what type of die we are currently using
     public int getType(){ return type; }
 
-    public int roll(){ return (int)(Math.random() * 6); }
+    public void roll(){ currentFace = (int)(Math.random() * 6); }
 
-    public String getFace(int num){ return faces[num]; }
+    public String getFace(){ return faces[currentFace]; }
 
     public String toString(){
         if(getType() == 0)
