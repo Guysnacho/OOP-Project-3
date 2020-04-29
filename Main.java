@@ -461,8 +461,60 @@ public class Main{
         }
     }
 
-    //Another iteration of the gameim method
+    //Method that handles rolling of all dice so its not sitting in the play method
+    public static void rollAllDice(Dice[] dice){
+        for(Dice current: dice){
+            current.roll();
+        }
+    }
+
+    //Method that handles rerolling
+    public static void reroll(Dice[] dice, Player currPlayer){
+        for(Dice current: dice){
+            //Checks if its dynamite
+            if(current.getFace().equals("dynamite")){
+                System.out.println("Dynamite cannot be rerolled, hehehe");
+                player.dynamiteRolls++;
+                continue;
+            }
+            current.roll();
+        }
+    }
+
+    //Display - Handles showing us the dice outside of the play function
+    public static void showDice(Dice[] dice){
+        for(Dice current: dice)
+            System.out.print(current.getFace() + " ");
+
+        System.out.println();
+    }
+
+    //Checks if there are any arrows since they must be resolved immediately
+    public static void checkArrows(Dice[] dice, Player currPlayer, ArrayList<Player> players){
+        for(Dice current: dice)
+            if(current.getFace().equals("arrow")){
+                if(currPlayer.getPile() == 0){
+                    //Launch indian attack
+                    System.out.println("## Look out! INDIAN ATTACK!! ##");
+                    for(Player attackedPlayer:players){
+
+                    }
+                } else {currPlayer.takeArrow();}
+            }
+    }
+
+    //Checks if the current player is still alive
+    public static void checkPlayer(Player currPlayer){
+        if(currPlayer.health <= 0){
+            currPlayer.revealRole();
+        }
+    }
+
+    //Another iteration of the gamesim method
     public static void play(int expanVersion, ArrayList<Player> players){
+        Scanner input = new Scanner(System.in);
+
+        int currPlayer = 0;
         //old Saloon expansion
         if(expanVersion==1){
 
@@ -471,8 +523,50 @@ public class Main{
         } else {
             //Finally the only other option is vanilla Bang!
 
-        }
+            //There are 5 standard dice
+            Dice[] dice = {new Dice(0), new Dice(0), new Dice(0), new Dice(0), new Dice(0)};
+            boolean finished = false;
 
+            //Actual game logic
+            while(!finished){
+                //Button interactions will be noted with getChar();
+                System.out.println("Roll the dice!");
+                input.getChar();
+                rollAllDice(dice);
+
+                //Display dice and check arrows
+                System.out.print("These are your current dice - ");
+                showDice(dice);
+                checkArrows(dice, players.get(currPlayer), players);
+
+                //Handle rerolling
+                System.out.println("Would you like to reroll? (y/n) - ");
+                if(input.getChar() == 'y'){
+                    for(int c = 0; c<3;c++){
+                        System.out.println("Reroll the dice!");
+                        input.getChar();
+                        reroll(dice);
+                        showDice(dice);
+                        checkArrows(dice, players.get(currPlayer));
+
+                        //Check if they have 3 dynamites and if they died
+                        if(players.get(currPlayer.dynamiteRolls >= 3)){
+                            System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                            System.out.println("~ Minus 1 HP");
+                            players.get(currPlayer.takeHit());
+
+                            checkPlayer(players.get(currPlayer));
+                            break;
+                        } else {
+                            System.out.println("Would you like to reroll again? (y/n) - ");
+                            if(input.getChar() == 'n')
+                                break;
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
 
