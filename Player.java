@@ -10,6 +10,7 @@ public class Player{
     public int health;
     public int arrows;
     public String[] attributes;
+    public int dynamiteRolls = 0;
 
     //Constructor
     public Player(int hp, String name){
@@ -56,8 +57,8 @@ public class Player{
 
     public void setRole(String role){attributes[1]=role;}
 
-    public void revealRole(int num) {
-        System.out.println("Player " + num + " has been eliminated");
-        System.out.println("Player " + num + " was a " + getRole());
+    public void revealRole() {
+        System.out.println(getName() + " has been eliminated");
+        System.out.println(getName() + " was a " + getRole());
     }
 }
