@@ -494,20 +494,30 @@ public class Main{
         for(Dice current: dice)
             if(current.getFace().equals("arrow")){
                 if(currPlayer.getPile() == 0){
-                    //Launch indian attack
+
+                    //Display - Launch indian attack
                     System.out.println("## Look out! INDIAN ATTACK!! ##");
                     for(Player attackedPlayer:players){
+                        for(int c = 0; c < attackedPlayer.getArrows(); c++){
+                            attackedPlayer.takeHit();
 
+                            //Check if they're dead
+                            if(checkPlayer(attackedPlayer))
+                                break;
+                        }
                     }
                 } else {currPlayer.takeArrow();}
             }
     }
 
     //Checks if the current player is still alive
-    public static void checkPlayer(Player currPlayer){
+    public static boolean checkPlayer(Player currPlayer){
         if(currPlayer.health <= 0){
             currPlayer.revealRole();
+            //Return if they're alive
+            return true;
         }
+        return false;
     }
 
     //Another iteration of the gamesim method
@@ -547,7 +557,7 @@ public class Main{
                         input.getChar();
                         reroll(dice);
                         showDice(dice);
-                        checkArrows(dice, players.get(currPlayer));
+                        checkArrows(dice, players.get(currPlayer), players);
 
                         //Check if they have 3 dynamites and if they died
                         if(players.get(currPlayer.dynamiteRolls >= 3)){
@@ -556,6 +566,7 @@ public class Main{
                             players.get(currPlayer.takeHit());
 
                             checkPlayer(players.get(currPlayer));
+                            input.getChar();
                             break;
                         } else {
                             System.out.println("Would you like to reroll again? (y/n) - ");
@@ -565,6 +576,7 @@ public class Main{
                     }
                 }
 
+                //Ends player interaction
             }
         }
     }
