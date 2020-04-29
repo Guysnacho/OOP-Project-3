@@ -16,7 +16,7 @@ public class Main{
         //The whole game will just loop through an arraylist of players over and over until a winner is found.
         //Easiest way to run it imo
         ArrayList<Player> players = new ArrayList<>();
-        ArrayList<Player> characters = loadCharacters();
+        ArrayList<Player> characters = loadCharacters(expanVersion);
         Scanner input = new Scanner(System.in);
 
         System.out.println("How many CPUs would you like to play against? (2-7)");
@@ -39,7 +39,8 @@ public class Main{
         }
         input.close();
         //while(Players are still alive/Outlaws haven't killed the sheriff/Renegade hasn't killed everyone yet)
-        usersim(players);
+        //usersim(players);
+        play(expanVersion, players);
     }
 
     //Gives a number from 0 to 15 (Since there are 16 characters)
@@ -206,8 +207,6 @@ public class Main{
     // this is the user simulation it allows someone to play for player zero
     public static void usersim(ArrayList<Player> players){
         Scanner input = new Scanner(System.in);
-        System.out.println("How many CPUs would you like to play against? (2-7)");
-        int selection = input.nextInt();
         int YB;
         // these are the attributes
         int reroll = 0;
@@ -462,7 +461,19 @@ public class Main{
         }
     }
 
+    //Another iteration of the gameim method
+    public static void play(int expanVersion, ArrayList<Player> players){
+        //old Saloon expansion
+        if(expanVersion==1){
 
+        } else if(expanVersion == 2){
+            //Then Undead or Alive
+        } else {
+            //Finally the only other option is vanilla Bang!
+
+        }
+
+    }
 
 
     public static void main(String[] args){
