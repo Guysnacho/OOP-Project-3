@@ -489,6 +489,53 @@ public class Main{
         System.out.println();
     }
 
+    //Dice interactions - Bulls Eye 1 and 2
+    public static void bullsEyeOne(ArrayList<Player> players){
+        System.out.println("You've got a free shot, to the left or right? (l/r)- ");
+        if(input.getChar() == 'l'){
+            //Go backwards until a live player is found
+            for(int c = players.size()-1; c > 0; c--){
+                if(players.get(c).getHealth() > 0){
+                    players.get(c).takeHit();
+                    checkPlayer(players.get(c));
+                    break;
+                }
+            }
+        } else {
+            //Go forward until a live player is found
+            for(int c = 0; c < players.size(); c++){
+                if(players.get(c).getHealth() > 0){
+                    players.get(c).takeHit();
+                    checkPlayer(players.get(c));
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void bullsEyeTwo(ArrayList<Player> players){
+        System.out.println("You've got a free shot, to the left or right? (l/r)- ");
+        if(input.getChar() == 'l'){
+            //Go backwards until a live player is found
+            for(int c = players.size()-1; c > 0; c--){
+                if(players.get(c).getHealth() > 0){
+                    players.get(c).takeHit();
+                    checkPlayer(players.get(c));
+                    break;
+                }
+            }
+        } else {
+            //Go forward until a live player is found
+            for(int c = 0; c < players.size(); c++){
+                if(players.get(c).getHealth() > 0){
+                    players.get(c).takeHit();
+                    checkPlayer(players.get(c));
+                    break;
+                }
+            }
+        }
+    }
+
     //Checks if there are any arrows since they must be resolved immediately
     public static void checkArrows(Dice[] dice, Player currPlayer, ArrayList<Player> players){
         for(Dice current: dice)
@@ -537,6 +584,8 @@ public class Main{
             Dice[] dice = {new Dice(0), new Dice(0), new Dice(0), new Dice(0), new Dice(0)};
             boolean finished = false;
 
+            //Gonna use this for Bulls eye dice
+            int livingPlayers = players.size()-1;
             //Actual game logic
             while(!finished){
                 //Button interactions will be noted with getChar();
@@ -565,7 +614,8 @@ public class Main{
                             System.out.println("~ Minus 1 HP");
                             players.get(currPlayer.takeHit());
 
-                            checkPlayer(players.get(currPlayer));
+                            if(checkPlayer(players.get(currPlayer)))
+                                livingPlayers--;
                             input.getChar();
                             break;
                         } else {
@@ -576,11 +626,30 @@ public class Main{
                     }
                 }
 
-                //Ends player interaction
+                //End of player interaction, now we resolve dice
+                for(Dice current: dice){
+                    //Handle Bull's eye 1
+                    if(current.getFace().equals("be 1")){
+                        bullsEyeOne();
+                    }
+                    //Handle Bull's eye 2
+
+                    //Handle beer
+
+                    //Handle gatiling guns
+                }
+
+                //Reset dynamite rolls
+                players.get(currPlayer).dynamiteRolls = 0;
+                cpuSim(expanVersion, players);
             }
         }
     }
 
+    //Method to handle CPU interactions
+    public static void cpuSim(){
+
+    }
 
     public static void main(String[] args){
         System.out.println("Welcome to Bang! now with expansions! Choose your experience - 0 (Vanilla Bang!) 1 (Old Saloon) 2 (Undead or Alive)") ==>;
