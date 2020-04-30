@@ -43,6 +43,9 @@ public class Main{
         play(expanVersion, players);
     }
 
+
+
+    //Setup methods
     //Gives a number from 0 to 15 (Since there are 16 characters)
     public static int rollCharacter(){
         return (int)(Math.random() * 15.0);
@@ -461,6 +464,10 @@ public class Main{
         }
     }
 
+
+
+
+    //Dice methods
     //Method that handles rolling of all dice so its not sitting in the play method
     public static void rollAllDice(Dice[] dice){
         for(Dice current: dice){
@@ -488,6 +495,9 @@ public class Main{
 
         System.out.println();
     }
+
+
+
 
 
 
