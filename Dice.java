@@ -62,11 +62,20 @@ public class Dice{
     public String getFace(){ return faces[currentFace]; }
 
     public String toString(){
-        if(getType() == 0)
-            return "Vanilla Band Die";
-        if(getType() == 1)
-            return "Old Saloon Expansion Die";
-        if(getType() == 2)
-            return "Undead or Alive Expansion Die";
+        String export = "";
+        if(getType() == 0){
+            export = "Vanilla Band Die";
+            return export;
+        }
+        if(getType() == 1){
+            export = "Old Saloon Expansion Die";
+            return export;
+        }
+
+        if(getType() == 2){
+            export = "Undead or Alive Expansion Die";
+            return export;
+        }
+        return "Null";
     }
 }

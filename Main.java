@@ -10,14 +10,14 @@ import java.lang.Math;
 // its named Main though SO DON'T CHANGE LINE 11 until we're ready to submit the assignment
 public class Main{
 
-    public static void startGame(int expanVersion){
+    public static void startGame(int expanVersion, Scanner input){
         System.out.println("### BANG! - The Dice Game###");
 
         //The whole game will just loop through an arraylist of players over and over until a winner is found.
         //Easiest way to run it imo
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Player> characters = loadCharacters(expanVersion);
-        Scanner input = new Scanner(System.in);
+        input = new Scanner(System.in);
 
         System.out.println("How many CPUs would you like to play against? (2-7)");
 
@@ -207,262 +207,6 @@ public class Main{
         }
     }
 
-    // this is the user simulation it allows someone to play for player zero
-    public static void usersim(ArrayList<Player> players){
-        Scanner input = new Scanner(System.in);
-        int YB;
-        // these are the attributes
-        int reroll = 0;
-        int counter = 0;
-        int option, dynamite, gatiling;
-        dynamite = 0;
-        gatiling = 0;
-        int rice;
-        int answer;
-        int t;
-        System.out.println("\n You are player Zero(0)");
-        // this is the loop for the players turn
-        for(int i = 0; i <= selection; i++){
-
-            System.out.println("it is player " + i + "`s turn");
-            counter = 0;
-            // Loop for checking if a players health is depleted before going into the next loop
-            for(t = 0; t <= selection; t++){
-                if (players.get(t).health <= 0) {
-                    counter = 4;
-                    System.out.println("The " + players.get(t).getRole() + " is dead");
-                }//else if(i == selection){i = 0;} if you want to simulate the enitre game uncomment this line
-            }
-            // this is the loop for the dice
-            do{
-                rice = rollDice();
-                System.out.println("\n you rolled a " + rice);
-                switch(rice){
-                    case 1: {
-                        players.get(i).takeArrow();
-                        if (Player.getPile() == 0) {
-                            System.out.println("you picked the last arrow. Everyone drops their arrows.");
-                            for (int j = 0; j <= selection; j++) {
-                                players.get(j).dropArrow();
-                                if (players.get(j).getHealth() == 0) {
-                                    players.get(j).revealRole(j);
-                                }
-                            }
-                        }
-                        System.out.println("you rolled an arrow would you like to reroll? 1 for yes and 2 for no ");
-                        if(i == 0){
-                            answer = YB = input.nextInt();
-                        } else {answer = random();}
-                        if (answer == 1 && reroll != 2) {
-                            System.out.println("This player picked reroll");
-                            reroll++;
-                            break;
-                        } else {
-                            System.out.println(" you have added an arrow to your pile ");
-                            System.out.println("you now have " + players.get(i).health + " lives");
-                            if (players.get(i).getHealth() <= 0) {
-                                counter = 4;
-                                break;
-                            }
-                            counter++;
-                            break;
-                        }
-                    }
-                    case 2: {
-                        System.out.println("you rolled a BEER would you like to reroll? 1 for yes and 2 for no ");
-                        if(i == 0){
-                            answer = YB = input.nextInt();
-                        } else {answer = random();}
-                        if (answer == 1 && reroll != 2) {
-                            System.out.println("This player picked reroll");
-                            reroll++;
-                            break;
-                        } else {
-                            System.out.println(" you drank a beer and gained a life point" );
-                            players.get(i).drinkUp();
-                            System.out.println("you now have " + players.get(i).health + " lives");
-                            if (players.get(i).getHealth() <= 0) {
-                                counter = 4;
-                            }
-                            counter++;
-                            break;
-                        }
-                    }
-                    case 3: {
-                        System.out.println("you rolled a dynamite you cannot reroll this dice ");
-                        dynamite++;
-                        if (dynamite == 3) {
-                            System.out.println("you have rolled 3 dynamites so you lose a life point ");
-                            dynamite = 0;
-                            players.get(i).takeHit();
-                            System.out.println("you now have " + players.get(i).health + " lives");
-                            if (players.get(i).getHealth() <= 0) {
-                                players.get(i).revealRole(i);
-                                counter = 4;
-                            }
-                            counter++;
-                            break;
-                        } else{
-                            counter++;
-                            break;}
-                    }
-                    case 4: {
-                        System.out.println("you rolled a oneshot, would you like to reroll? 1 for yes and 2 for no ");
-                        if(i == 0){
-                            answer = YB = input.nextInt();
-                        } else {answer = random();}
-                        if (answer == 1 && reroll != 2) {
-                            System.out.println("This player picked reroll");
-                            reroll++;
-                            break;
-                        } else {
-                            System.out.println(" which direction do you want to shoot 1 for left and 2 for right ");
-                            if(i == 0){
-                                answer = YB = input.nextInt();
-                            } else {answer = random();}
-                            if (answer == 2) {
-                                System.out.println("this player picked right");
-                                if (i == selection){
-                                    i = 0;
-                                    players.get(i).takeHit();
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                    if (players.get(i).health <= 0) {
-                                        counter = 4;
-                                    } i = selection; counter++; break;
-                                }else{ i++;
-                                    players.get(i).takeHit();
-                                    //counter++;
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                }if (players.get(i).health <= 0) {
-                                    counter = 4;
-                                }
-                                i--; counter++;
-                                break;
-                            } else {
-                                System.out.println("this player picked left");
-                                if(i == 0){
-                                    i = selection;
-                                    players.get(i).takeHit();
-                                    //counter++;
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                    if (players.get(i).health <= 0) {
-                                        counter = 4;
-                                    }
-                                    i = 0;counter++;
-                                    break;
-                                }else{
-                                    i--;
-                                    players.get(i).takeHit();
-                                    //counter++;
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                    if (players.get(i).health <= 0) {
-                                        counter = 4;
-                                    }
-                                    i++;counter++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    case 5: {
-                        System.out.println("you rolled a doubleshot, would you like to reroll? 1 for yes and 2 for no ");
-                        if(i == 0){
-                            answer = YB = input.nextInt();
-                        } else {answer = random();}
-                        if (answer == 1 && reroll != 2) {
-                            System.out.println("This player picked reroll");
-                            reroll++;
-                            break;
-                        }else {
-                            System.out.println(" which direction do you want to shoot 1 for left and 2 for right ");
-                            if(i == 0){
-                                answer = YB = input.nextInt();
-                            } else {answer = random();}
-                            if (answer == 2) {
-                                System.out.println("this player picked right");
-                                if (i == selection){
-                                    i = 0;
-                                    players.get(i).takeHit();
-                                    players.get(i).takeHit();
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                    if (players.get(i).health <= 0) {
-                                        counter = 4;
-                                    } i = selection; counter++; break;
-                                }else{ i++;
-                                    players.get(i).takeHit();
-                                    players.get(i).takeHit();
-                                    //counter++;
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                }if (players.get(i).health <= 0) {
-                                    counter = 4;
-                                }
-                                i--; counter++;
-                                break;
-                            } else {
-                                System.out.println("this player picked left");
-                                if(i == 0){
-                                    i = selection;
-                                    players.get(i).takeHit();
-                                    players.get(i).takeHit();
-                                    //counter++;
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                    if (players.get(i).health <= 0) {
-                                        counter = 4;
-                                    }
-                                    i = 0; counter++;
-                                    break;
-                                }else{
-                                    i--;
-                                    players.get(i).takeHit();
-                                    players.get(i).takeHit();
-                                    //counter++;
-                                    System.out.println("that player now has " + players.get(i).health + " lives");
-                                    if (players.get(i).health <= 0) {
-                                        counter = 4;
-                                    }
-                                    i++; counter++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    case 6: {
-                        System.out.println("you rolled an gatiling gun, would you like to reroll? 1 for yes and 2 for no  ");
-                        if(i == 0){
-                            answer = YB = input.nextInt();
-                        } else {answer = random();}
-
-                        if (answer == 1 && reroll != 2) {
-                            System.out.println("This player picked reroll");
-                            reroll++;
-                            break;
-                        }
-                        gatiling++;
-                        if (gatiling == 3) {
-                            System.out.println("you have rolled 3 gatilings so everyone but you loses a life point ");
-                            for(t = 0; t <= selection; t++){
-                                if(t == i){
-                                    System.out.println(players.get(i).getName() + " is doing the shooting");
-                                }
-                                players.get(t).takeHit();
-                            }
-                            // counter++;
-                            gatiling = 0;
-                            for(t = 0; t <= selection; t++){
-                                if (players.get(t).health <= 0) {
-                                    counter = 4;
-                                } }
-                            counter++;
-                            break;
-                        } else {
-                            counter++;
-                            break;
-                        }
-                    }
-                }
-            } while(counter <= 4);//while (counter != 5);
-        }
-    }
 
 
 
@@ -481,7 +225,7 @@ public class Main{
             //Checks if its dynamite
             if(current.getFace().equals("dynamite")){
                 System.out.println("Dynamite cannot be rerolled, hehehe");
-                player.dynamiteRolls++;
+                currPlayer.dynamiteRolls++;
                 continue;
             }
             current.roll();
@@ -503,13 +247,16 @@ public class Main{
 
     //Dice interactions - Bulls Eye 1 and 2
     public static void bullsEyeOne(ArrayList<Player> players){
+        Scanner input = new Scanner(System.in);
         System.out.println("You've got a free shot, to the left or right? (l/r)- ");
-        if(input.getChar() == 'l'){
+        if(input.next().charAt(0) == 'l'){
             //Go backwards until a live player is found
             for(int c = players.size()-1; c > 0; c--){
                 if(players.get(c).getHealth() > 0){
+                    System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
-                    checkPlayer(players.get(c));
+                    if(checkPlayer(players.get(c)))
+                        players.get(c).revealRole();
                     break;
                 }
             }
@@ -517,8 +264,10 @@ public class Main{
             //Go forward until a live player is found
             for(int c = 1; c < players.size(); c++){
                 if(players.get(c).getHealth() > 0){
+                    System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
-                    checkPlayer(players.get(c));
+                    if(checkPlayer(players.get(c)))
+                        players.get(c).revealRole();
                     break;
                 }
             }
@@ -526,20 +275,22 @@ public class Main{
     }
 
     public static void bullsEyeTwo(ArrayList<Player> players, int livingPlayers){
+        Scanner input = new Scanner(System.in);
         System.out.println("You've got a free shot, to the left or right? (l/r)- ");
 
         //Check if there are enough players
         if(livingPlayers > 4){
-            if(input.getChar() == 'l'){
+            if(input.next().charAt(0) == 'l'){
                 //Go backwards until a live player is found, twice. Hence 2 for loops
                 for(int c = players.size()-1; c > 0; c--){
                     if(players.get(c).getHealth() > 0){
                         for(int d = c; c> 0; c--){
                             if(players.get(d).getHealth() > 0){
                                 players.get(d).takeHit();
-                                checkPlayer(players.get(d));
+                                if(checkPlayer(players.get(d)))
+                                    players.get(d).revealRole();
                                 c = 100;
-                                System.out.println("You shot " + players.get(d).getName + "!");
+                                System.out.println("You shot " + players.get(d).getName() + "!");
                                 break;
                             }
                         }
@@ -552,9 +303,10 @@ public class Main{
                         for(int d = c; c < players.size(); c++){
                             if(players.get(d).getHealth() > 0){
                                 players.get(d).takeHit();
-                                checkPlayer(players.get(d));
+                                if(checkPlayer(players.get(d)))
+                                    players.get(d).revealRole();
                                 c = 100;
-                                System.out.println("You shot " + players.get(d).getName + "!");
+                                System.out.println("You shot " + players.get(d).getName() + "!");
                                 break;
                             }
                         }
@@ -569,7 +321,7 @@ public class Main{
     }
 
     //Gatling gun
-    public static void gatling(ArrayList<Player> players, Player currPlayer){
+    public static void runTheGat(ArrayList<Player> players, Player currPlayer){
         System.out.println("Everyone gets the heat!");
 
         for(Player attackedPlayer:players){
@@ -636,12 +388,16 @@ public class Main{
             boolean finished = false;
 
             //Gonna use this for Bulls eye dice
-            int livingPlayers = players.size()-1;
+            int livingPlayers = players.size();
+            for(Player item: players)
+                if(item.getHealth() <= 0)
+                    livingPlayers--;
+
             //Actual game logic
             while(!finished){
-                //Button interactions will be noted with getChar();
+                //Button interactions will be noted with next().charAt(0);
                 System.out.println("Roll the dice!");
-                input.getChar();
+                input.next().charAt(0);
                 rollAllDice(dice);
 
                 //Display dice and check arrows
@@ -651,27 +407,27 @@ public class Main{
 
                 //Handle rerolling
                 System.out.println("Would you like to reroll? (y/n) - ");
-                if(input.getChar() == 'y'){
+                if(input.next().charAt(0) == 'y'){
                     for(int c = 0; c<3;c++){
                         System.out.println("Reroll the dice!");
-                        input.getChar();
-                        reroll(dice);
+                        input.next().charAt(0);
+                        reroll(dice, players.get(0));
                         showDice(dice);
                         checkArrows(dice, players.get(currPlayer), players);
 
                         //Check if they have 3 dynamites and if they died
-                        if(players.get(currPlayer.dynamiteRolls >= 3)){
+                        if(players.get(currPlayer).dynamiteRolls >= 3){
                             System.out.println("Sorry, too many dynamites! ## KABLAM ##");
                             System.out.println("~ Minus 1 HP");
-                            players.get(currPlayer.takeHit());
+                            players.get(currPlayer).takeHit();
 
                             if(checkPlayer(players.get(currPlayer)))
                                 livingPlayers--;
-                            input.getChar();
+                            input.next().charAt(0);
                             break;
                         } else {
                             System.out.println("Would you like to reroll again? (y/n) - ");
-                            if(input.getChar() == 'n')
+                            if(input.next().charAt(0) == 'n')
                                 break;
                         }
                     }
@@ -682,11 +438,11 @@ public class Main{
                 for(Dice current: dice){
                     //Handle Bull's eye 1
                     if(current.getFace().equals("be 1")){
-                        bullsEyeOne();
+                        bullsEyeOne(players);
                     }
                     //Handle Bull's eye 2
                     if(current.getFace().equals("be 2")){
-                        bullsEyeOne();
+                        bullsEyeTwo(players, livingPlayers);
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
@@ -697,7 +453,7 @@ public class Main{
                     if(current.getFace().equals("gatling")){
                         gatCount++;
                         if(gatCount >= 3){
-                            runTheGat(players);
+                            runTheGat(players, players.get(0));
                         }
 
                     }
@@ -706,28 +462,29 @@ public class Main{
                 //Reset dynamite rolls
                 players.get(currPlayer).dynamiteRolls = 0;
                 cpuSim(expanVersion, players);
+                finished = true;
             }
         }
     }
 
     //Method to handle CPU interactions
-    public static void cpuSim(){
-
+    public static void cpuSim(int expanVersion, ArrayList<Player> players){
+        System.out.println("Test");
     }
 
     public static void main(String[] args){
-        System.out.println("Welcome to Bang! now with expansions! Choose your experience - 0 (Vanilla Bang!) 1 (Old Saloon) 2 (Undead or Alive)") ==>;
+        System.out.println("Welcome to Bang! now with expansions! Choose your experience - 0 (Vanilla Bang!) 1 (Old Saloon) 2 (Undead or Alive) ==> ");
         Scanner input = new Scanner(System.in);
-        input.close();
+        int selection = input.nextInt();
         switch(selection){
-            case 0: startGame(0);
+            case 0: startGame(0, input);
                 break;
-            case 1: startGame(1);
+            case 1: startGame(1, input);
                 break;
-            case 2: startGame(2);
+            case 2: startGame(2, input);
                 break;
-            default : startGame(0);
+            default : startGame(0, input);
         }
-
+        input.close();
     }
 }
