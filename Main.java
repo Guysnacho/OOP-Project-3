@@ -17,7 +17,6 @@ public class Main{
         //Easiest way to run it imo
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Player> characters = loadCharacters(expanVersion);
-        input = new Scanner(System.in);
 
         System.out.println("How many CPUs would you like to play against? (2-7)");
 
@@ -37,10 +36,10 @@ public class Main{
                 break;
             }
         }
-        input.close();
+
         //while(Players are still alive/Outlaws haven't killed the sheriff/Renegade hasn't killed everyone yet)
         //usersim(players);
-        play(expanVersion, players);
+        play(expanVersion, players, input);
     }
 
 
@@ -246,8 +245,7 @@ public class Main{
 
 
     //Dice interactions - Bulls Eye 1 and 2
-    public static void bullsEyeOne(ArrayList<Player> players){
-        Scanner input = new Scanner(System.in);
+    public static void bullsEyeOne(ArrayList<Player> players, Scanner input){
         System.out.println("You've got a free shot, to the left or right? (l/r)- ");
         if(input.next().charAt(0) == 'l'){
             //Go backwards until a live player is found
@@ -274,8 +272,7 @@ public class Main{
         }
     }
 
-    public static void bullsEyeTwo(ArrayList<Player> players, int livingPlayers){
-        Scanner input = new Scanner(System.in);
+    public static void bullsEyeTwo(ArrayList<Player> players, int livingPlayers, Scanner input){
         System.out.println("You've got a free shot, to the left or right? (l/r)- ");
 
         //Check if there are enough players
@@ -315,7 +312,7 @@ public class Main{
             }
         } else {
             //If there aren't enough players, run Bulls Eye 1
-            bullsEyeOne(players);
+            bullsEyeOne(players, input);
         }
 
     }
@@ -371,8 +368,7 @@ public class Main{
 
 
     //Another iteration of the gamesim method
-    public static void play(int expanVersion, ArrayList<Player> players){
-        Scanner input = new Scanner(System.in);
+    public static void play(int expanVersion, ArrayList<Player> players, Scanner input){
 
         int currPlayer = 0;
         //old Saloon expansion
@@ -438,11 +434,11 @@ public class Main{
                 for(Dice current: dice){
                     //Handle Bull's eye 1
                     if(current.getFace().equals("be 1")){
-                        bullsEyeOne(players);
+                        bullsEyeOne(players, input);
                     }
                     //Handle Bull's eye 2
                     if(current.getFace().equals("be 2")){
-                        bullsEyeTwo(players, livingPlayers);
+                        bullsEyeTwo(players, livingPlayers, input);
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
