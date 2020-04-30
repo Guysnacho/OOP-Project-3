@@ -489,6 +489,8 @@ public class Main{
         System.out.println();
     }
 
+
+
     //Dice interactions - Bulls Eye 1 and 2
     public static void bullsEyeOne(ArrayList<Player> players){
         System.out.println("You've got a free shot, to the left or right? (l/r)- ");
@@ -503,7 +505,7 @@ public class Main{
             }
         } else {
             //Go forward until a live player is found
-            for(int c = 0; c < players.size(); c++){
+            for(int c = 1; c < players.size(); c++){
                 if(players.get(c).getHealth() > 0){
                     players.get(c).takeHit();
                     checkPlayer(players.get(c));
@@ -519,21 +521,33 @@ public class Main{
         //Check if there are enough players
         if(livingPlayers > 4){
             if(input.getChar() == 'l'){
-                //Go backwards until a live player is found
+                //Go backwards until a live player is found, twice. Hence 2 for loops
                 for(int c = players.size()-1; c > 0; c--){
                     if(players.get(c).getHealth() > 0){
-                        players.get(c).takeHit();
-                        checkPlayer(players.get(c));
-                        break;
+                        for(int d = c; c> 0; c--){
+                            if(players.get(d).getHealth() > 0){
+                                players.get(d).takeHit();
+                                checkPlayer(players.get(d));
+                                c = 100;
+                                System.out.println("You shot " + players.get(d).getName + "!");
+                                break;
+                            }
+                        }
                     }
                 }
             } else {
-                //Go forward until a live player is found
-                for(int c = 0; c < players.size(); c++){
+                //Go forward until a live player is found, twice. Hence 2 for loops
+                for(int c = 1; c < players.size(); c++){
                     if(players.get(c).getHealth() > 0){
-                        players.get(c).takeHit();
-                        checkPlayer(players.get(c));
-                        break;
+                        for(int d = c; c < players.size(); c++){
+                            if(players.get(d).getHealth() > 0){
+                                players.get(d).takeHit();
+                                checkPlayer(players.get(d));
+                                c = 100;
+                                System.out.println("You shot " + players.get(d).getName + "!");
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -544,6 +558,24 @@ public class Main{
 
     }
 
+    //Gatling gun
+    public static void gatling(ArrayList<Player> players, Player currPlayer){
+        System.out.println("Everyone gets the heat!");
+
+        for(Player attackedPlayer:players){
+            if(attackedPlayer == currPlayer || checkPlayer(attackedPlayer))
+                continue;
+            attackedPlayer.takeHit();
+            System.out.println(attackedPlayer.getName() + " # Minus 1 HP #");
+            //Check if they're alive
+            if(checkPlayer(attackedPlayer))
+                attackedPlayer.revealRole();
+        }
+    }
+
+
+
+    //Player interactions
     //Checks if there are any arrows since they must be resolved immediately
     public static void checkArrows(Dice[] dice, Player currPlayer, ArrayList<Player> players){
         for(Dice current: dice)
@@ -553,13 +585,11 @@ public class Main{
                     //Display - Launch indian attack
                     System.out.println("## Look out! INDIAN ATTACK!! ##");
                     for(Player attackedPlayer:players){
-                        for(int c = 0; c < attackedPlayer.getArrows(); c++){
-                            attackedPlayer.takeHit();
-
-                            //Check if they're dead
-                            if(checkPlayer(attackedPlayer))
-                                break;
-                        }
+                        if(checkPlayer(attackedPlayer))
+                            continue;
+                        //If theyre dead, we skip them. If not, we attack and check their health again
+                        attackedPlayer.dropArrow();
+                        checkPlayer(attackedPlayer);
                     }
                 } else {currPlayer.takeArrow();}
             }
@@ -574,6 +604,9 @@ public class Main{
         }
         return false;
     }
+
+
+
 
     //Another iteration of the gamesim method
     public static void play(int expanVersion, ArrayList<Player> players){
@@ -635,16 +668,29 @@ public class Main{
                 }
 
                 //End of player interaction, now we resolve dice
+                int gatCount = 0;
                 for(Dice current: dice){
                     //Handle Bull's eye 1
                     if(current.getFace().equals("be 1")){
                         bullsEyeOne();
                     }
                     //Handle Bull's eye 2
-
+                    if(current.getFace().equals("be 2")){
+                        bullsEyeOne();
+                    }
                     //Handle beer
-
+                    if(current.getFace().equals("beer")){
+                        players.get(0).drinkUp();
+                        System.out.println("You got a beer! # Plus 1 HP #");
+                    }
                     //Handle gatiling guns
+                    if(current.getFace().equals("gatling")){
+                        gatCount++;
+                        if(gatCount >= 3){
+                            runTheGat(players);
+                        }
+
+                    }
                 }
 
                 //Reset dynamite rolls
