@@ -320,21 +320,58 @@ public class Main{
 
     //CPU versions of the same methods
     public static void bullsEyeOne(ArrayList<Player> players, Scanner input, Player cpu){
-        System.out.println("You've got a free shot, to the left or right? (l/r)- ");
-        if(input.next().charAt(0) == 'l'){
-            //Go backwards until a live player is found
-            for(int c = players.size()-1; c > 0; c--){
+        System.out.print("You've got a free shot, to the left or right? - ");
+
+        //Find where this player is in the list
+        int location;
+        for(location = 0; location < players.size(); location++){
+            if(players.get(location) == cpu)
+                break;
+        }
+
+
+        //Decide which direction randomly
+        if((int)(Math.random() * 11 < 6)){
+            System.out.println(" Left ");
+            //Go backwards from the current player until a live player is found
+
+            for(int c = location-1; c >= 0; c--){
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
                     if(checkPlayer(players.get(c)))
                         players.get(c).revealRole();
-                    break;
+                    return;
+                }
+            }
+            //Loop around the other side if we hit the end of the list
+            for(int c = players.size() -1; c > location; c--){
+                if(players.get(c).getHealth() > 0){
+                    System.out.println("You shot " + players.get(c).getName() + "!");
+                    players.get(c).takeHit();
+                    if(checkPlayer(players.get(c)))
+                        players.get(c).revealRole();
+                    return;
                 }
             }
         } else {
-            //Go forward until a live player is found
-            for(int c = 1; c < players.size(); c++){
+            //Go backwards from the current player until a live player is found
+            System.out.println(" Right ");
+
+            for(int c = location; c < players.size(); c++){
+                //If the player is at the end of the list, skip to the next loop
+                if(location == players.size()-1)
+                    break;
+                if(players.get(c).getHealth() > 0){
+                    System.out.println("You shot " + players.get(c).getName() + "!");
+                    players.get(c).takeHit();
+                    if(checkPlayer(players.get(c)))
+                        players.get(c).revealRole();
+                    return;
+                }
+            }
+            //Loop around the other side if we hit the end of the list
+            for(int c = 0; c < location; c++){
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
@@ -347,38 +384,93 @@ public class Main{
     }
 
     public static void bullsEyeTwo(ArrayList<Player> players, int livingPlayers, Scanner input, Player cpu){
-        System.out.println("You've got a free shot, to the left or right? (l/r)- ");
+        System.out.print("You've got a free shot, to the left or right? - ");
+
+        //Find where this player is in the list
+        int location;
+        for(location = 0; location < players.size(); location++){
+            if(players.get(location) == cpu)
+                break;
+        }
 
         //Check if there are enough players
+        int skipped = 0;
         if(livingPlayers > 4){
-            if(input.next().charAt(0) == 'l'){
+            if((int)(Math.random() * 11 < 6)){
+                System.out.println(" Left ");
                 //Go backwards until a live player is found, twice. Hence 2 for loops
-                for(int c = players.size()-1; c > 0; c--){
+                for(int c = location-1; c >= 0; c--){
                     if(players.get(c).getHealth() > 0){
-                        for(int d = c; c> 0; c--){
+                        skipped++;
+                        for(int d = c; d>=0; d--){
                             if(players.get(d).getHealth() > 0){
-                                players.get(d).takeHit();
-                                if(checkPlayer(players.get(d)))
-                                    players.get(d).revealRole();
-                                c = 100;
-                                System.out.println("You shot " + players.get(d).getName() + "!");
-                                break;
+                                System.out.println("You shot " + players.get(c).getName() + "!");
+                                players.get(c).takeHit();
+                                if(checkPlayer(players.get(c)))
+                                    players.get(c).revealRole();
+                                return;
+                            }
+                        }
+                        //Assuming we haven't found a second person to shoot, we loop again from the end
+                        for(int d = players.size(); d > location; d--){
+                            if(players.get(d).getHealth() > 0){
+                                skipped++;
+                                if(skipped >=2){
+                                    System.out.println("You shot " + players.get(d).getName() + "!");
+                                    players.get(d).takeHit();
+                                    if(checkPlayer(players.get(d)))
+                                        players.get(d).revealRole();
+                                    return;
+                                }
+                            }
+                            //Final case when both are on the second loop around
+                            for(int e = d; e>=0; e--){
+                                if(players.get(e).getHealth() > 0){
+                                    System.out.println("You shot " + players.get(e).getName() + "!");
+                                    players.get(e).takeHit();
+                                    if(checkPlayer(players.get(e)))
+                                        players.get(e).revealRole();
+                                    return;
+                                }
                             }
                         }
                     }
                 }
             } else {
                 //Go forward until a live player is found, twice. Hence 2 for loops
-                for(int c = 1; c < players.size(); c++){
+                for(int c = location; c < players.size(); c++){
                     if(players.get(c).getHealth() > 0){
-                        for(int d = c; c < players.size(); c++){
+                        skipped++;
+                        for(int d = c; d <= players.size(); d++){
                             if(players.get(d).getHealth() > 0){
-                                players.get(d).takeHit();
-                                if(checkPlayer(players.get(d)))
-                                    players.get(d).revealRole();
-                                c = 100;
-                                System.out.println("You shot " + players.get(d).getName() + "!");
-                                break;
+                                System.out.println("You shot " + players.get(c).getName() + "!");
+                                players.get(c).takeHit();
+                                if(checkPlayer(players.get(c)))
+                                    players.get(c).revealRole();
+                                return;
+                            }
+                        }
+                        //Assuming we haven't found a second person to shoot, we loop again from the end
+                        for(int d = 0; d < location; d++){
+                            if(players.get(d).getHealth() > 0){
+                                skipped++;
+                                if(skipped >=2){
+                                    System.out.println("You shot " + players.get(d).getName() + "!");
+                                    players.get(d).takeHit();
+                                    if(checkPlayer(players.get(d)))
+                                        players.get(d).revealRole();
+                                    return;
+                                }
+                            }
+                            //Final case when both are on the second loop around
+                            for(int e = d; e <= 0; e++){
+                                if(players.get(e).getHealth() > 0){
+                                    System.out.println("You shot " + players.get(e).getName() + "!");
+                                    players.get(e).takeHit();
+                                    if(checkPlayer(players.get(e)))
+                                        players.get(e).revealRole();
+                                    return;
+                                }
                             }
                         }
                     }
@@ -386,7 +478,7 @@ public class Main{
             }
         } else {
             //If there aren't enough players, run Bulls Eye 1
-            bullsEyeOne(players, input);
+            bullsEyeOne(players, input, cpu);
         }
 
     }
@@ -647,32 +739,29 @@ public class Main{
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
-                        players.get(0).drinkUp();
+                        cpu.drinkUp();
                         System.out.println("You got a beer! # Plus 1 HP #");
                     }
                     //Handle gatiling guns
                     if(current.getFace().equals("gatling")){
                         gatCount++;
                         if(gatCount >= 3){
-                            runTheGat(players, players.get(0));
+                            runTheGat(players, cpu);
                         }
 
                     }
                 }
 
                 //Reset dynamite rolls
-                players.get(currPlayer).dynamiteRolls = 0;
+                cpu.dynamiteRolls = 0;
 
-                //Run CPU simulation X times for each other player
-                for(Player cpu: players){
-                    //skip the non cpu
-                    if(cpu = players.get(0))
-                        continue;
-                    cpuSim(expanVersion, players, input, cpu);
-                }
+                //##Testing##
+                int playercount = 0;
+                for(Player item:players)
+                    if(playercount < 2)
+                        done = true;
             }
         }
-
     }
 
     public static void main(String[] args){
