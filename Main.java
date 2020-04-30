@@ -622,7 +622,7 @@ public class Main{
                         }
                         //Handle beer
                         if(current.getFace().equals("beer")){
-                            if(players.get(0).getHeath() + 1 > players.get(0).initHealth){
+                            if(players.get(0).getHealth() + 1 > players.get(0).initHealth){
                                 System.out.println("You got a beer! But you already have max health.");
                             } else {
                                 players.get(0).drinkUp();
@@ -751,7 +751,7 @@ public class Main{
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
-                        if(cpu.getHeath() + 1 > cpu.initHealth){
+                        if(cpu.getHealth() + 1 > cpu.initHealth){
                             System.out.println("You got a beer! But you already have max health.");
                         } else {
                             cpu.drinkUp();
