@@ -736,6 +736,8 @@ public class Main{
                             }
                         }
                     }
+                } else {
+                    System.out.println("No thanks");
                 }
 
                 //End of player interaction, now we resolve dice
