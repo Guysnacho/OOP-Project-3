@@ -643,7 +643,11 @@ public class Main{
                     cpuSim(expanVersion, players, input, cpu);
                 }
 
-                finished = true;
+                //##Testing##
+                int playercount = 0;
+                for(Player item:players)
+                    if(playercount < 2)
+                        finished = true;
             }
         }
     }
@@ -754,12 +758,6 @@ public class Main{
 
                 //Reset dynamite rolls
                 cpu.dynamiteRolls = 0;
-
-                //##Testing##
-                int playercount = 0;
-                for(Player item:players)
-                    if(playercount < 2)
-                        done = true;
             }
         }
     }
