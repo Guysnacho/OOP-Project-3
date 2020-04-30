@@ -331,7 +331,7 @@ public class Main{
 
 
         //Decide which direction randomly
-        if((int)(Math.random() * 11 < 6)){
+        if((int)(Math.random() * 11) < 6){
             System.out.println(" Left ");
             //Go backwards from the current player until a live player is found
 
@@ -396,7 +396,7 @@ public class Main{
         //Check if there are enough players
         int skipped = 0;
         if(livingPlayers > 4){
-            if((int)(Math.random() * 11 < 6)){
+            if((int)(Math.random() * 11) < 6){
                 System.out.println(" Left ");
                 //Go backwards until a live player is found, twice. Hence 2 for loops
                 for(int c = location-1; c >= 0; c--){
@@ -555,90 +555,98 @@ public class Main{
             Dice[] dice = {new Dice(0), new Dice(0), new Dice(0), new Dice(0), new Dice(0)};
             boolean finished = false;
 
-            //Gonna use this for Bulls eye dice
-            int livingPlayers = players.size();
-            for(Player item: players)
-                if(checkPlayer(item))
-                    livingPlayers--;
+
 
             //Actual game logic
             while(!finished){
+                //Gonna use this for Bulls eye dice
+                int livingPlayers = players.size();
+                for(Player item: players)
+                    if(checkPlayer(item))
+                        livingPlayers--;
 
-                //TODO: Check if the main player is alive
+                //Check if the main player is alive
+                if(checkPlayer(players.get(0))){
+                    System.out.println("Whoops, looks like you're already dunzo partner!\nOnto the next!");
+                } else {
+                    //Button interactions will be noted with next().charAt(0);
+                    System.out.println("Roll the dice!");
+                    input.next().charAt(0);
+                    rollAllDice(dice);
 
-                //Button interactions will be noted with next().charAt(0);
-                System.out.println("Roll the dice!");
-                input.next().charAt(0);
-                rollAllDice(dice);
+                    //Display dice and check arrows
+                    System.out.print("These are your current dice - ");
+                    showDice(dice);
+                    checkArrows(dice, players.get(currPlayer), players);
 
-                //Display dice and check arrows
-                System.out.print("These are your current dice - ");
-                showDice(dice);
-                checkArrows(dice, players.get(currPlayer), players);
-
-                //Handle rerolling
-                System.out.println("Would you like to reroll? (y/n) - ");
-                if(input.next().charAt(0) == 'y'){
-                    for(int c = 0; c<3;c++){
-                        System.out.println("Reroll the dice!");
-                        input.next().charAt(0);
-                        reroll(dice, players.get(0));
-                        showDice(dice);
-                        checkArrows(dice, players.get(currPlayer), players);
-
-                        //Check if they have 3 dynamites and if they died
-                        if(players.get(currPlayer).dynamiteRolls >= 3){
-                            System.out.println("Sorry, too many dynamites! ## KABLAM ##");
-                            System.out.println("~ Minus 1 HP");
-                            players.get(currPlayer).takeHit();
-
-                            if(checkPlayer(players.get(currPlayer))){
-                                livingPlayers--;
-                                players.get(currPlayer).revealRole();
-                            }
+                    //Handle rerolling
+                    System.out.println("Would you like to reroll? (y/n) - ");
+                    if(input.next().charAt(0) == 'y'){
+                        for(int c = 0; c<3;c++){
+                            System.out.println("Reroll the dice!");
                             input.next().charAt(0);
-                            break;
-                        } else {
-                            System.out.println("Would you like to reroll again? (y/n) - ");
-                            if(input.next().charAt(0) == 'n')
+                            reroll(dice, players.get(0));
+                            showDice(dice);
+                            checkArrows(dice, players.get(currPlayer), players);
+
+                            //Check if they have 3 dynamites and if they died
+                            if(players.get(currPlayer).dynamiteRolls >= 3){
+                                System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                                System.out.println("~ Minus 1 HP");
+                                players.get(currPlayer).takeHit();
+
+                                if(checkPlayer(players.get(currPlayer))){
+                                    livingPlayers--;
+                                    players.get(currPlayer).revealRole();
+                                }
+                                input.next().charAt(0);
                                 break;
+                            } else {
+                                System.out.println("Would you like to reroll again? (y/n) - ");
+                                if(input.next().charAt(0) == 'n')
+                                    break;
+                            }
                         }
                     }
-                }
 
-                //End of player interaction, now we resolve dice
-                int gatCount = 0;
-                for(Dice current: dice){
-                    //Handle Bull's eye 1
-                    if(current.getFace().equals("be 1")){
-                        bullsEyeOne(players, input);
-                    }
-                    //Handle Bull's eye 2
-                    if(current.getFace().equals("be 2")){
-                        bullsEyeTwo(players, livingPlayers, input);
-                    }
-                    //Handle beer
-                    if(current.getFace().equals("beer")){
-                        players.get(0).drinkUp();
-                        System.out.println("You got a beer! # Plus 1 HP #");
-                    }
-                    //Handle gatiling guns
-                    if(current.getFace().equals("gatling")){
-                        gatCount++;
-                        if(gatCount >= 3){
-                            runTheGat(players, players.get(0));
+                    //End of player interaction, now we resolve dice
+                    int gatCount = 0;
+                    for(Dice current: dice){
+                        //Handle Bull's eye 1
+                        if(current.getFace().equals("be 1")){
+                            bullsEyeOne(players, input);
                         }
+                        //Handle Bull's eye 2
+                        if(current.getFace().equals("be 2")){
+                            bullsEyeTwo(players, livingPlayers, input);
+                        }
+                        //Handle beer
+                        if(current.getFace().equals("beer")){
+                            if(players.get(0).getHeath() + 1 > players.get(0).initHealth){
+                                System.out.println("You got a beer! But you already have max health.");
+                            } else {
+                                players.get(0).drinkUp();
+                                System.out.println("You got a beer! # Plus 1 HP #");
+                            }
+                        }
+                        //Handle gatiling guns
+                        if(current.getFace().equals("gatling")){
+                            gatCount++;
+                            if(gatCount >= 3){
+                                runTheGat(players, players.get(0));
+                            }
 
+                        }
                     }
-                }
 
-                //Reset dynamite rolls
-                players.get(currPlayer).dynamiteRolls = 0;
+                    //Reset dynamite rolls
+                    players.get(currPlayer).dynamiteRolls = 0;
+                }
 
                 //Run CPU simulation X times for each other player
                 for(Player cpu: players){
                     //skip the non cpu
-                    if(cpu = players.get(0))
+                    if(cpu == players.get(0))
                         continue;
                     cpuSim(expanVersion, players, input, cpu);
                 }
@@ -699,7 +707,7 @@ public class Main{
 
                 //Handle rerolling for CPU, randomly
                 System.out.print("Would you like to reroll? - ");
-                if((int)(Math.random() * 11 < 4)){
+                if((int)(Math.random() * 11) < 4){
                     System.out.println("Oh yeah partner!");
                     for(int c = 0; c<3;c++){
                         System.out.println("Reroll the dice!");
@@ -722,7 +730,7 @@ public class Main{
                             break;
                         } else {
                             System.out.print("Would you like to reroll again? - ");
-                            if((int)(Math.random() * 99 > 65)){
+                            if((int)(Math.random() * 99) > 65){
                                 System.out.println("No siree!");
                                 break;
                             }
@@ -743,8 +751,12 @@ public class Main{
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
-                        cpu.drinkUp();
-                        System.out.println("You got a beer! # Plus 1 HP #");
+                        if(cpu.getHeath() + 1 > cpu.initHealth){
+                            System.out.println("You got a beer! But you already have max health.");
+                        } else {
+                            cpu.drinkUp();
+                            System.out.println("You got a beer! # Plus 1 HP #");
+                        }
                     }
                     //Handle gatiling guns
                     if(current.getFace().equals("gatling")){
@@ -752,14 +764,12 @@ public class Main{
                         if(gatCount >= 3){
                             runTheGat(players, cpu);
                         }
-
                     }
                 }
 
                 //Reset dynamite rolls
                 cpu.dynamiteRolls = 0;
             }
-        }
     }
 
     public static void main(String[] args){

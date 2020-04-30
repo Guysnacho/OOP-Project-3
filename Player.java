@@ -7,14 +7,14 @@ public class Player{
     //Attributes
     public static int arrowPile;
     //Removed initHealth because we never actually used it
-    public int health;
+    public int health, initHealth;
     public int arrows;
     public String[] attributes;
     public int dynamiteRolls = 0;
 
     //Constructor
     public Player(int hp, String name){
-        health  = hp;
+        health = initHealth = hp;
         attributes = new String[2];
         //Each player has a name and a role. We'll use this to keep track of their special abilities.
         //Gonna need a lot of if statements to check but its simple
