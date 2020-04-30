@@ -318,6 +318,79 @@ public class Main{
 
     }
 
+    //CPU versions of the same methods
+    public static void bullsEyeOne(ArrayList<Player> players, Scanner input, Player cpu){
+        System.out.println("You've got a free shot, to the left or right? (l/r)- ");
+        if(input.next().charAt(0) == 'l'){
+            //Go backwards until a live player is found
+            for(int c = players.size()-1; c > 0; c--){
+                if(players.get(c).getHealth() > 0){
+                    System.out.println("You shot " + players.get(c).getName() + "!");
+                    players.get(c).takeHit();
+                    if(checkPlayer(players.get(c)))
+                        players.get(c).revealRole();
+                    break;
+                }
+            }
+        } else {
+            //Go forward until a live player is found
+            for(int c = 1; c < players.size(); c++){
+                if(players.get(c).getHealth() > 0){
+                    System.out.println("You shot " + players.get(c).getName() + "!");
+                    players.get(c).takeHit();
+                    if(checkPlayer(players.get(c)))
+                        players.get(c).revealRole();
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void bullsEyeTwo(ArrayList<Player> players, int livingPlayers, Scanner input, Player cpu){
+        System.out.println("You've got a free shot, to the left or right? (l/r)- ");
+
+        //Check if there are enough players
+        if(livingPlayers > 4){
+            if(input.next().charAt(0) == 'l'){
+                //Go backwards until a live player is found, twice. Hence 2 for loops
+                for(int c = players.size()-1; c > 0; c--){
+                    if(players.get(c).getHealth() > 0){
+                        for(int d = c; c> 0; c--){
+                            if(players.get(d).getHealth() > 0){
+                                players.get(d).takeHit();
+                                if(checkPlayer(players.get(d)))
+                                    players.get(d).revealRole();
+                                c = 100;
+                                System.out.println("You shot " + players.get(d).getName() + "!");
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else {
+                //Go forward until a live player is found, twice. Hence 2 for loops
+                for(int c = 1; c < players.size(); c++){
+                    if(players.get(c).getHealth() > 0){
+                        for(int d = c; c < players.size(); c++){
+                            if(players.get(d).getHealth() > 0){
+                                players.get(d).takeHit();
+                                if(checkPlayer(players.get(d)))
+                                    players.get(d).revealRole();
+                                c = 100;
+                                System.out.println("You shot " + players.get(d).getName() + "!");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            //If there aren't enough players, run Bulls Eye 1
+            bullsEyeOne(players, input);
+        }
+
+    }
+
     //Gatling gun
     public static void runTheGat(ArrayList<Player> players, Player currPlayer){
         System.out.println("Everyone gets the heat!");
@@ -523,7 +596,10 @@ public class Main{
                 System.out.print("These are the current dice - ");
                 showDice(dice);
                 checkArrows(dice, cpu, players);
-                if(checkPlayer(cpu))
+                if(checkPlayer(cpu)){
+                    System.out.println("Since " + cpu.getName() + "has been eliminated, we'll be ending their turn here.");
+                    return;
+                }
 
                 //Handle rerolling for CPU, randomly
                 System.out.print("Would you like to reroll? - ");
@@ -563,7 +639,7 @@ public class Main{
                 for(Dice current: dice){
                     //Handle Bull's eye 1
                     if(current.getFace().equals("be 1")){
-                        bullsEyeOne(players, input);
+                        bullsEyeOne(players, input, cpu);
                     }
                     //Handle Bull's eye 2
                     if(current.getFace().equals("be 2")){
