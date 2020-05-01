@@ -36,7 +36,7 @@ public class Main{
                 break;
             }
         }
-        System.out.println("You are " + players.get(0).getName() + " and you have " + players.get(0).getHealth() + " health points. Good luck!");
+        System.out.println("You are " + players.get(0).getName() + ", you have " + players.get(0).getHealth() + " health points, and you are a " + players.get(0).getRole() + " Good luck!");
 
         //while(Players are still alive/Outlaws haven't killed the sheriff/Renegade hasn't killed everyone yet)
         //usersim(players);
@@ -59,17 +59,19 @@ public class Main{
             //Old Saloon possible characters
             characters.add(new Player(9,"Paul Regret"));
             characters.add(new Player(8,"Pedro Ramirez"));
-            characters.add(new Player(9,"Rose Doolan"));
-            characters.add(new Player(8,"Sid Ketchum"));
-            characters.add(new Player(8,"Slab The Killer"));
-            characters.add(new Player(8,"Suzy Lafayette"));
             characters.add(new Player(9,"Vulture Sam"));
             characters.add(new Player(8,"Willy The Kid"));
+            characters.add(new Player(8,"Sid Ketchum"));
+            characters.add(new Player(8,"Black Jack"));
+            characters.add(new Player(8,"Calamity Janet"));
+            characters.add(new Player(9,"Jesse Jones"));
+            characters.add(new Player(7,"Jourdonnais"));
             characters.add(new Player(9,"Apache Kid"));
-            characters.add(new Player(7,"Elena Fuente"));
+            characters.add(new Player(7,"Jose Delgado"));
+
         } else if(expanVersion == 2) {
             //Undead or Alive possible characters
-            characters.add(new Player(8,"Bart Cassidy"));
+            characters.add(new Player(8,"Sid Ketchum"));
             characters.add(new Player(8,"Black Jack"));
             characters.add(new Player(8,"Calamity Janet"));
             characters.add(new Player(7,"El Gringo"));
@@ -82,20 +84,14 @@ public class Main{
 
         } else {
             //Vanilla Bang possible characters
-            characters.add(new Player(8,"Bart Cassidy"));
+            characters.add(new Player(8,"Sid Ketchum"));
             characters.add(new Player(8,"Black Jack"));
             characters.add(new Player(8,"Calamity Janet"));
-            characters.add(new Player(7,"El Gringo"));
             characters.add(new Player(9,"Jesse Jones"));
             characters.add(new Player(7,"Jourdonnais"));
-            characters.add(new Player(7,"Kit Carlson"));
             characters.add(new Player(8,"Lucky Duke"));
             characters.add(new Player(9,"Paul Regret"));
             characters.add(new Player(8,"Pedro Ramirez"));
-            characters.add(new Player(9,"Rose Doolan"));
-            characters.add(new Player(8,"Sid Ketchum"));
-            characters.add(new Player(8,"Slab The Killer"));
-            characters.add(new Player(8,"Suzy Lafayette"));
             characters.add(new Player(9,"Vulture Sam"));
             characters.add(new Player(8,"Willy The Kid"));
         }
@@ -219,14 +215,26 @@ public class Main{
         }
     }
 
-    //Method that handles rerolling
+    //Method that handles rerolling AND Black Jack's special ability
     public static void reroll(Dice[] dice, Player currPlayer){
+        int blJack = 0;
         for(Dice current: dice){
             //Checks if its dynamite
+            if(!currPlayer.getName().equals("Black Jack")){
+                if(current.getFace().equals("dynamite")){
+                    System.out.println("Dynamite cannot be rerolled, hehehe");
+                    currPlayer.dynamiteRolls++;
+                    continue;
+                }
+            }
+
+            //Handles blackjack's dice
             if(current.getFace().equals("dynamite")){
-                System.out.println("Dynamite cannot be rerolled, hehehe");
-                currPlayer.dynamiteRolls++;
-                continue;
+                blJack++;
+                System.out.println("Dynamite can be rerolled, for Black Jack");
+                if(blJack >=3){
+                    currPlayer.dynamiteRolls = 3;
+                }
             }
             current.roll();
         }
@@ -254,8 +262,15 @@ public class Main{
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
+                    if(players.get(c).getName().equals("Pedro Ramirez")){
+                        if(players.get(c).arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            players.get(c).arrows--;
+                            players.get(c).arrowPile++;
+                        }
+                    }
                     if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole();
+                        players.get(c).revealRole(); vultureTime(players);
                     break;
                 }
             }
@@ -265,8 +280,15 @@ public class Main{
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
+                    if(players.get(c).getName().equals("Pedro Ramirez")){
+                        if(players.get(c).arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            players.get(c).arrows--;
+                            players.get(c).arrowPile++;
+                        }
+                    }
                     if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole();
+                        players.get(c).revealRole(); vultureTime(players);
                     break;
                 }
             }
@@ -285,8 +307,15 @@ public class Main{
                         for(int d = c; c> 0; c--){
                             if(players.get(d).getHealth() > 0){
                                 players.get(d).takeHit();
+                                if(players.get(d).getName().equals("Pedro Ramirez")){
+                                    if(players.get(d).arrows > 0){
+                                        System.out.println("Pedro dropped an arrow!");
+                                        players.get(d).arrows--;
+                                        players.get(d).arrowPile++;
+                                    }
+                                }
                                 if(checkPlayer(players.get(d)))
-                                    players.get(d).revealRole();
+                                    players.get(d).revealRole(); vultureTime(players);
                                 c = 100;
                                 System.out.println("You shot " + players.get(d).getName() + "!");
                                 break;
@@ -301,8 +330,15 @@ public class Main{
                         for(int d = c; c < players.size(); c++){
                             if(players.get(d).getHealth() > 0){
                                 players.get(d).takeHit();
+                                if(players.get(d).getName().equals("Pedro Ramirez")){
+                                    if(players.get(d).arrows > 0){
+                                        System.out.println("Pedro dropped an arrow!");
+                                        players.get(d).arrows--;
+                                        players.get(d).arrowPile++;
+                                    }
+                                }
                                 if(checkPlayer(players.get(d)))
-                                    players.get(d).revealRole();
+                                    players.get(d).revealRole(); vultureTime(players);
                                 c = 100;
                                 System.out.println("You shot " + players.get(d).getName() + "!");
                                 break;
@@ -318,7 +354,7 @@ public class Main{
 
     }
 
-    //CPU versions of the same methods
+    //CPU versions of the same methods, pass it the cpu player along with the arraylist
     public static void bullsEyeOne(ArrayList<Player> players, Scanner input, Player cpu){
         System.out.print("You've got a free shot, to the left or right? - ");
 
@@ -339,8 +375,15 @@ public class Main{
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
+                    if(players.get(c).getName().equals("Pedro Ramirez")){
+                        if(players.get(c).arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            players.get(c).arrows--;
+                            players.get(c).arrowPile++;
+                        }
+                    }
                     if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole();
+                        players.get(c).revealRole(); vultureTime(players);
                     return;
                 }
             }
@@ -349,8 +392,15 @@ public class Main{
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
+                    if(players.get(c).getName().equals("Pedro Ramirez")){
+                        if(players.get(c).arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            players.get(c).arrows--;
+                            players.get(c).arrowPile++;
+                        }
+                    }
                     if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole();
+                        players.get(c).revealRole(); vultureTime(players);
                     return;
                 }
             }
@@ -365,8 +415,15 @@ public class Main{
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
+                    if(players.get(c).getName().equals("Pedro Ramirez")){
+                        if(players.get(c).arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            players.get(c).arrows--;
+                            players.get(c).arrowPile++;
+                        }
+                    }
                     if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole();
+                        players.get(c).revealRole(); vultureTime(players);
                     return;
                 }
             }
@@ -375,8 +432,15 @@ public class Main{
                 if(players.get(c).getHealth() > 0){
                     System.out.println("You shot " + players.get(c).getName() + "!");
                     players.get(c).takeHit();
+                    if(players.get(c).getName().equals("Pedro Ramirez")){
+                        if(players.get(c).arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            players.get(c).arrows--;
+                            players.get(c).arrowPile++;
+                        }
+                    }
                     if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole();
+                        players.get(c).revealRole(); vultureTime(players);
                     break;
                 }
             }
@@ -406,8 +470,15 @@ public class Main{
                             if(players.get(d).getHealth() > 0){
                                 System.out.println("You shot " + players.get(c).getName() + "!");
                                 players.get(c).takeHit();
+                                if(players.get(c).getName().equals("Pedro Ramirez")){
+                                    if(players.get(c).arrows > 0){
+                                        System.out.println("Pedro dropped an arrow!");
+                                        players.get(c).arrows--;
+                                        players.get(c).arrowPile++;
+                                    }
+                                }
                                 if(checkPlayer(players.get(c)))
-                                    players.get(c).revealRole();
+                                    players.get(c).revealRole(); vultureTime(players);
                                 return;
                             }
                         }
@@ -418,8 +489,15 @@ public class Main{
                                 if(skipped >=2){
                                     System.out.println("You shot " + players.get(d).getName() + "!");
                                     players.get(d).takeHit();
+                                    if(players.get(d).getName().equals("Pedro Ramirez")){
+                                        if(players.get(d).arrows > 0){
+                                            System.out.println("Pedro dropped an arrow!");
+                                            players.get(d).arrows--;
+                                            players.get(d).arrowPile++;
+                                        }
+                                    }
                                     if(checkPlayer(players.get(d)))
-                                        players.get(d).revealRole();
+                                        players.get(d).revealRole(); vultureTime(players);
                                     return;
                                 }
                             }
@@ -428,8 +506,15 @@ public class Main{
                                 if(players.get(e).getHealth() > 0){
                                     System.out.println("You shot " + players.get(e).getName() + "!");
                                     players.get(e).takeHit();
+                                    if(players.get(e).getName().equals("Pedro Ramirez")){
+                                        if(players.get(e).arrows > 0){
+                                            System.out.println("Pedro dropped an arrow!");
+                                            players.get(e).arrows--;
+                                            players.get(e).arrowPile++;
+                                        }
+                                    }
                                     if(checkPlayer(players.get(e)))
-                                        players.get(e).revealRole();
+                                        players.get(e).revealRole(); vultureTime(players);
                                     return;
                                 }
                             }
@@ -445,8 +530,15 @@ public class Main{
                             if(players.get(d).getHealth() > 0){
                                 System.out.println("You shot " + players.get(c).getName() + "!");
                                 players.get(c).takeHit();
+                                if(players.get(c).getName().equals("Pedro Ramirez")){
+                                    if(players.get(c).arrows > 0){
+                                        System.out.println("Pedro dropped an arrow!");
+                                        players.get(c).arrows--;
+                                        players.get(c).arrowPile++;
+                                    }
+                                }
                                 if(checkPlayer(players.get(c)))
-                                    players.get(c).revealRole();
+                                    players.get(c).revealRole(); vultureTime(players);
                                 return;
                             }
                         }
@@ -457,8 +549,15 @@ public class Main{
                                 if(skipped >=2){
                                     System.out.println("You shot " + players.get(d).getName() + "!");
                                     players.get(d).takeHit();
+                                    if(players.get(d).getName().equals("Pedro Ramirez")){
+                                        if(players.get(d).arrows > 0){
+                                            System.out.println("Pedro dropped an arrow!");
+                                            players.get(d).arrows--;
+                                            players.get(d).arrowPile++;
+                                        }
+                                    }
                                     if(checkPlayer(players.get(d)))
-                                        players.get(d).revealRole();
+                                        players.get(d).revealRole(); vultureTime(players);
                                     return;
                                 }
                             }
@@ -467,8 +566,15 @@ public class Main{
                                 if(players.get(e).getHealth() > 0){
                                     System.out.println("You shot " + players.get(e).getName() + "!");
                                     players.get(e).takeHit();
+                                    if(players.get(e).getName().equals("Pedro Ramirez")){
+                                        if(players.get(e).arrows > 0){
+                                            System.out.println("Pedro dropped an arrow!");
+                                            players.get(e).arrows--;
+                                            players.get(e).arrowPile++;
+                                        }
+                                    }
                                     if(checkPlayer(players.get(e)))
-                                        players.get(e).revealRole();
+                                        players.get(e).revealRole(); vultureTime(players);
                                     return;
                                 }
                             }
@@ -484,17 +590,24 @@ public class Main{
     }
 
     //Gatling gun
-    public static void runTheGat(ArrayList<Player> players, Player currPlayer){
+    public static void runTheGat(ArrayList<Player> players, Player currPlayer, Scanner input){
         System.out.println("Everyone gets the heat!");
 
         for(Player attackedPlayer:players){
-            if(attackedPlayer == currPlayer || checkPlayer(attackedPlayer))
+            if(attackedPlayer == currPlayer || checkPlayer(attackedPlayer) || attackedPlayer.getName().equals("Paul Regret"))
                 continue;
             attackedPlayer.takeHit();
+            if(attackedPlayer.getName().equals("Pedro Ramirez")){
+                if(attackedPlayer.arrows > 0){
+                    System.out.println("Pedro dropped an arrow!");
+                    attackedPlayer.arrows--;
+                    attackedPlayer.arrowPile++;
+                }
+            }
             System.out.println(attackedPlayer.getName() + " # Minus 1 HP #");
             //Check if they're alive
             if(checkPlayer(attackedPlayer))
-                attackedPlayer.revealRole();
+                attackedPlayer.revealRole(); vultureTime(players);
         }
     }
 
@@ -513,9 +626,18 @@ public class Main{
                         if(checkPlayer(attackedPlayer))
                             continue;
                         //If theyre dead, we skip them. If not, we attack and check their health again
+                        //Jourdonnais Ability
+                        if(attackedPlayer.getName().equals("Jourdonnais")){
+                            attackedPlayer.jourdArrows();
+                            if(checkPlayer(attackedPlayer)){
+                                attackedPlayer.revealRole(); vultureTime(players);
+                                continue;
+                            }
+                            continue;
+                        }
                         attackedPlayer.dropArrow();
                         if(checkPlayer(attackedPlayer)){
-                            attackedPlayer.revealRole();
+                            attackedPlayer.revealRole(); vultureTime(players);
                             continue;
                         }
                     }
@@ -526,10 +648,10 @@ public class Main{
             }
     }
 
-    //Checks if the current player is still alive
+    //Checks if the current player is still alive, if they are dead, it returns true. else false VERY IMPORTANT, DONT CHANGE
     public static boolean checkPlayer(Player currPlayer){
         if(currPlayer.health <= 0){
-            currPlayer.revealRole();
+            currPlayer.revealRole(); vultureTime(players);
             //Return if they're alive
             return true;
         }
@@ -537,7 +659,45 @@ public class Main{
     }
 
 
+    //Special player abilities
+    //For human sid player
+    public static void sidTurn(ArrayList<Player> players, Player player, Scanner input){
+        System.out.print("Pick a player to gain health - (0 - " + players.size()-1 + ")");
 
+        player.get(input.nextInt()).health++;
+    }
+
+    //For CPU sid player
+    public static void sidTurn(ArrayList<Player> players, Player cpu){
+        if(cpu.getHealth() < 3){
+            System.out.println(cpu.getName() + " chose to heal himself.");
+            player.get(input.nextInt()).health++;
+        } else {
+            for(int c = players.size()-1; c >= 0; c--){
+                if(!checkPlayer(players.get(c))){
+                    players.get(c).health++;
+                }
+            }
+        }
+    }
+
+    //Vulture Sam Special Ability
+    public static void vultureTime(ArrayList<Player> players){
+        for(Player currPlayer:players){
+            if(currPlayer.getName().equals("Vulture Sam")){
+                if(currPlayer.getHealth() <= 7){
+                    currPlayer.drinkUp();
+                    currPlayer.drinkUp();
+                    System.out.println("Vulture Sam steals two life points like the creep he is!");
+                } else if(currPlayer.getHealth() == 8){
+                    currPlayer.drinkUp();
+                    System.out.println("Vulture Sam steals one life points like the creep he is!");
+                } else {
+                    System.out.println("Vulture Sam trys to steal life points but he's maxed out.");
+                }
+            }
+        }
+    }
 
     //Another iteration of the gamesim method
     public static void play(int expanVersion, ArrayList<Player> players, Scanner input){
@@ -569,6 +729,9 @@ public class Main{
                 if(checkPlayer(players.get(0))){
                     System.out.println("Whoops, looks like you're already dunzo partner!\nOnto the next!");
                 } else {
+                    if(players.get(0).getName().equals("Sid Ketchum"))
+                        sidTurn(players, players.get(0), input);
+
                     //Button interactions will be noted with next().charAt(0);
                     System.out.println("Roll the dice!");
                     input.next().charAt(0);
@@ -582,31 +745,75 @@ public class Main{
                     //Handle rerolling
                     System.out.println("Would you like to reroll? (y/n) - ");
                     if(input.next().charAt(0) == 'y'){
-                        for(int c = 0; c<3;c++){
-                            System.out.println("Reroll the dice!");
-                            input.next().charAt(0);
-                            reroll(dice, players.get(0));
-                            showDice(dice);
-                            checkArrows(dice, players.get(currPlayer), players);
-
-                            //Check if they have 3 dynamites and if they died
-                            if(players.get(currPlayer).dynamiteRolls >= 3){
-                                System.out.println("Sorry, too many dynamites! ## KABLAM ##");
-                                System.out.println("~ Minus 1 HP");
-                                players.get(currPlayer).takeHit();
-
-                                if(checkPlayer(players.get(currPlayer))){
-                                    livingPlayers--;
-                                    players.get(currPlayer).revealRole();
-                                }
+                        //Lucky Duke special
+                        if(players.get(0).getName().equals("Lucky Duke")){
+                            for(int c = 0; c<4;c++){
+                                System.out.println("Reroll the dice!");
                                 input.next().charAt(0);
-                                break;
-                            } else {
-                                System.out.println("Would you like to reroll again? (y/n) - ");
-                                if(input.next().charAt(0) == 'n')
+                                reroll(dice, players.get(0));
+                                showDice(dice);
+                                checkArrows(dice, players.get(currPlayer), players);
+
+                                //Check if they have 3 dynamites and if they died
+                                if(players.get(currPlayer).dynamiteRolls >= 3){
+                                    System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                                    System.out.println("~ Minus 1 HP");
+                                    players.get(currPlayer).takeHit();
+                                    if(players.get(currPlayer).getName().equals("Pedro Ramirez")){
+                                        if(players.get(currPlayer).arrows > 0){
+                                            System.out.println("Pedro dropped an arrow!");
+                                            players.get(currPlayer).arrows--;
+                                            players.get(currPlayer).arrowPile++;
+                                        }
+                                    }
+
+                                    if(checkPlayer(players.get(currPlayer))){
+                                        livingPlayers--;
+                                        players.get(currPlayer).revealRole(); vultureTime(players);
+                                    }
+                                    input.next().charAt(0);
                                     break;
+                                } else {
+                                    System.out.println("Would you like to reroll again? (y/n) - ");
+                                    if(input.next().charAt(0) == 'n')
+                                        break;
+                                }
+                            }
+                        } else {
+                            for(int c = 0; c<3;c++){
+                                System.out.println("Reroll the dice!");
+                                input.next().charAt(0);
+                                reroll(dice, players.get(0));
+                                showDice(dice);
+                                checkArrows(dice, players.get(currPlayer), players);
+
+                                //Check if they have 3 dynamites and if they died
+                                if(players.get(currPlayer).dynamiteRolls >= 3){
+                                    System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                                    System.out.println("~ Minus 1 HP");
+                                    players.get(currPlayer).takeHit();
+                                    if(players.get(currPlayer).getName().equals("Pedro Ramirez")){
+                                        if(players.get(currPlayer).arrows > 0){
+                                            System.out.println("Pedro dropped an arrow!");
+                                            players.get(currPlayer).arrows--;
+                                            players.get(currPlayer).arrowPile++;
+                                        }
+                                    }
+
+                                    if(checkPlayer(players.get(currPlayer))){
+                                        livingPlayers--;
+                                        players.get(currPlayer).revealRole(); vultureTime(players);
+                                    }
+                                    input.next().charAt(0);
+                                    break;
+                                } else {
+                                    System.out.println("Would you like to reroll again? (y/n) - ");
+                                    if(input.next().charAt(0) == 'n')
+                                        break;
+                                }
                             }
                         }
+
                     }
 
                     //End of player interaction, now we resolve dice
@@ -614,15 +821,46 @@ public class Main{
                     for(Dice current: dice){
                         //Handle Bull's eye 1
                         if(current.getFace().equals("be 1")){
+                            //Calamity Janet - Ability
+                            if(players.get(0).getName().equals("Calamity Janet")){
+                                System.out.println("You get to choose which bulls eye! (1/2)- ");
+                                if(input.nextInt() == 1){
+                                    bullsEyeOne(players, input);
+                                    continue;
+                                } else {
+                                    bullsEyeTwo(players, input);
+                                    continue;
+                                }
+                            }
+
+                            //Normal Bulls Eye
                             bullsEyeOne(players, input);
                         }
                         //Handle Bull's eye 2
                         if(current.getFace().equals("be 2")){
+                            //Calamity Janet - Ability
+                            if(players.get(0).getName().equals("Calamity Janet")){
+                                System.out.println("You get to choose which bulls eye! (1/2)- ");
+                                if(input.nextInt() == 1){
+                                    bullsEyeOne(players, input);
+                                    continue;
+                                } else {
+                                    bullsEyeTwo(players, input);
+                                    continue;
+                                }
+                            }
+
+                            //Normal Bulls Eye
                             bullsEyeTwo(players, livingPlayers, input);
                         }
                         //Handle beer
                         if(current.getFace().equals("beer")){
-                            if(players.get(0).getHealth() + 1 > players.get(0).initHealth){
+                            //Jesse Jones - Ability
+                            if(players.get(0).getName().equals("Jesse Jones") && players.get(0).getHealth() <= 4){
+                                players.get(0).drinkUp();
+                                players.get(0).drinkUp();
+                                System.out.println("You got a beer as Jesse Jones, a chronic alcoholic! # Plus 2 HP #");
+                            } else if(players.get(0).getHealth() + 1 > players.get(0).initHealth){
                                 System.out.println("You got a beer! But you already have max health.");
                             } else {
                                 players.get(0).drinkUp();
@@ -632,10 +870,11 @@ public class Main{
                         //Handle gatiling guns
                         if(current.getFace().equals("gatling")){
                             gatCount++;
-                            if(gatCount >= 3){
-                                runTheGat(players, players.get(0));
+                            if(players.get(0).getName().equals("Willy the Kid") && gatCount >= 2){
+                                runTheGat(players, players.get(0), input);
+                            } else if(gatCount >= 3){
+                                runTheGat(players, players.get(0), input);
                             }
-
                         }
                     }
 
@@ -662,7 +901,7 @@ public class Main{
 
 
 
-    //Method to handle CPU interactions
+    //Method to handle CPU interactions, only one turn.
     public static void cpuSim(int expanVersion, ArrayList<Player> players, Scanner input, Player cpu){
         //Check if they are alive
         if(checkPlayer(cpu)){
@@ -689,7 +928,9 @@ public class Main{
                     if(checkPlayer(item))
                         livingPlayers--;
 
-                //Actual game logic
+                //Checks if its sid's turn
+                if(players.get(0).getName().equals("Sid Ketchum"))
+                    sidTurn(players, cpu);
 
                 //Button interactions will be noted with next().charAt(0);
                 System.out.println("Roll the dice!");
@@ -709,33 +950,79 @@ public class Main{
                 System.out.print("Would you like to reroll? - ");
                 if((int)(Math.random() * 11) < 4){
                     System.out.println("Oh yeah partner!");
-                    for(int c = 0; c<3;c++){
-                        System.out.println("Reroll the dice!");
-                        input.next().charAt(0);
-                        reroll(dice, cpu);
-                        showDice(dice);
-                        checkArrows(dice, cpu, players);
-
-                        //Check if they have 3 dynamites and if they died
-                        if(cpu.dynamiteRolls >= 3){
-                            System.out.println("Sorry, too many dynamites! ## KABLAM ##");
-                            System.out.println("~ Minus 1 HP");
-                            cpu.takeHit();
-
-                            if(checkPlayer(cpu)){
-                                livingPlayers--;
-                                cpu.revealRole();
-                            }
+                    //Lucky Duke Special
+                    if(players.get(0).getName().equals("Lucky Duke")){
+                        for(int c = 0; c<4;c++){
+                            System.out.println("Reroll the dice!");
                             input.next().charAt(0);
-                            break;
-                        } else {
-                            System.out.print("Would you like to reroll again? - ");
-                            if((int)(Math.random() * 99) > 65){
-                                System.out.println("No siree!");
+                            reroll(dice, cpu);
+                            showDice(dice);
+                            checkArrows(dice, cpu, players);
+
+                            //Check if they have 3 dynamites and if they died
+                            if(cpu.dynamiteRolls >= 3){
+                                System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                                System.out.println("~ Minus 1 HP");
+                                cpu.takeHit();
+                                if(cpu.getName().equals("Pedro Ramirez")){
+                                    if(cpu.arrows > 0){
+                                        System.out.println("Pedro dropped an arrow!");
+                                        cpu.arrows--;
+                                        cpu.arrowPile++;
+                                    }
+                                }
+
+                                if(checkPlayer(cpu)){
+                                    livingPlayers--;
+                                    cpu.revealRole(); vultureTime(players);
+                                }
+                                input.next().charAt(0);
                                 break;
+                            } else {
+                                System.out.print("Would you like to reroll again? - ");
+                                if((int)(Math.random() * 99) > 65){
+                                    System.out.println("No siree!");
+                                    break;
+                                }
+                            }
+                        }
+                    } else{
+                        for(int c = 0; c<3;c++){
+                            System.out.println("Reroll the dice!");
+                            input.next().charAt(0);
+                            reroll(dice, cpu);
+                            showDice(dice);
+                            checkArrows(dice, cpu, players);
+
+                            //Check if they have 3 dynamites and if they died
+                            if(cpu.dynamiteRolls >= 3){
+                                System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                                System.out.println("~ Minus 1 HP");
+                                cpu.takeHit();
+                                if(cpu.getName().equals("Pedro Ramirez")){
+                                    if(cpu.arrows > 0){
+                                        System.out.println("Pedro dropped an arrow!");
+                                        cpu.arrows--;
+                                        cpu.arrowPile++;
+                                    }
+                                }
+
+                                if(checkPlayer(cpu)){
+                                    livingPlayers--;
+                                    cpu.revealRole(); vultureTime(players);
+                                }
+                                input.next().charAt(0);
+                                break;
+                            } else {
+                                System.out.print("Would you like to reroll again? - ");
+                                if((int)(Math.random() * 99) > 65){
+                                    System.out.println("No siree!");
+                                    break;
+                                }
                             }
                         }
                     }
+
                 } else {
                     System.out.println("No thanks");
                 }
@@ -745,15 +1032,45 @@ public class Main{
                 for(Dice current: dice){
                     //Handle Bull's eye 1
                     if(current.getFace().equals("be 1")){
+                        //Calamity Janet ability CPU version
+                        if(players.get(0).getName().equals("Calamity Janet")){
+                            System.out.print("You get to choose which bulls eye! (1/2)- ");
+                            if((int)Math.random() * 2 == 0){
+                                System.out.println("1")
+                                bullsEyeOne(players, input, cpu);
+                                continue;
+                            } else {
+                                bullsEyeTwo(players, input, cpu);
+                                continue;
+                            }
+                        }
+                        //Normal bulls eye one
                         bullsEyeOne(players, input, cpu);
                     }
                     //Handle Bull's eye 2
                     if(current.getFace().equals("be 2")){
-                        bullsEyeTwo(players, livingPlayers, input);
+                        //Calamity Janet ability CPU version
+                        if(players.get(0).getName().equals("Calamity Janet")){
+                            System.out.print("You get to choose which bulls eye! (1/2)- ");
+                            if((int)Math.random() * 2 == 0){
+                                System.out.println("1")
+                                bullsEyeOne(players, input, cpu);
+                                continue;
+                            } else {
+                                bullsEyeTwo(players, input, cpu);
+                                continue;
+                            }
+                        }
+                        //Normal bulls eye one
+                        bullsEyeTwo(players, input, cpu);
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
-                        if(cpu.getHealth() + 1 > cpu.initHealth){
+                        if(cpu.getName().equals("Jesse Jones") && cpu.getHealth() <= 4){
+                            cpu.drinkUp();
+                            cpu.drinkUp();
+                            System.out.println("You got a beer as Jesse Jones, a chronic alcoholic! # Plus 2 HP #");
+                        } else if(cpu.getHealth() + 1 > cpu.initHealth){
                             System.out.println("You got a beer! But you already have max health.");
                         } else {
                             cpu.drinkUp();
@@ -763,8 +1080,10 @@ public class Main{
                     //Handle gatiling guns
                     if(current.getFace().equals("gatling")){
                         gatCount++;
-                        if(gatCount >= 3){
-                            runTheGat(players, cpu);
+                        if(cpu.getName().equals("Willy the Kid") && gatCount >= 2){
+                            runTheGat(players, cpu, input);
+                        } else if(gatCount >= 3){
+                            runTheGat(players, cpu, input);
                         }
                     }
                 }

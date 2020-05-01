@@ -44,6 +44,13 @@ public class Player{
         arrows = 0;
     }
 
+    //Variation just for Jourdonnais
+    public void jourdArrows(){
+        health = health - 1;
+        arrowPile += arrows;
+        arrows = 0;
+    }
+
     public static int getPile() {return arrowPile;}
 
     public int getArrows(){return arrows;}
