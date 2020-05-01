@@ -651,7 +651,7 @@ public class Main{
     //Checks if the current player is still alive, if they are dead, it returns true. else false VERY IMPORTANT, DONT CHANGE
     public static boolean checkPlayer(Player currPlayer){
         if(currPlayer.health <= 0){
-            currPlayer.revealRole(); vultureTime(players);
+            currPlayer.revealRole();
             //Return if they're alive
             return true;
         }
@@ -662,20 +662,21 @@ public class Main{
     //Special player abilities
     //For human sid player
     public static void sidTurn(ArrayList<Player> players, Player player, Scanner input){
-        System.out.print("Pick a player to gain health - (0 - " + players.size()-1 + ")");
+        System.out.print("Pick a player to gain health - (0 - " + (players.size()-1) + ")");
 
-        player.get(input.nextInt()).health++;
+        players.get(input.nextInt()).health++;
     }
 
     //For CPU sid player
     public static void sidTurn(ArrayList<Player> players, Player cpu){
         if(cpu.getHealth() < 3){
             System.out.println(cpu.getName() + " chose to heal himself.");
-            player.get(input.nextInt()).health++;
+            cpu.drinkUp();
         } else {
             for(int c = players.size()-1; c >= 0; c--){
                 if(!checkPlayer(players.get(c))){
                     players.get(c).health++;
+                    System.out.println(cpu.getName() + " chose to heal " + players.get(c).getName() + ".");
                 }
             }
         }
@@ -828,7 +829,7 @@ public class Main{
                                     bullsEyeOne(players, input);
                                     continue;
                                 } else {
-                                    bullsEyeTwo(players, input);
+                                    bullsEyeTwo(players, livingPlayers, input);
                                     continue;
                                 }
                             }
@@ -845,7 +846,7 @@ public class Main{
                                     bullsEyeOne(players, input);
                                     continue;
                                 } else {
-                                    bullsEyeTwo(players, input);
+                                    bullsEyeTwo(players, livingPlayers, input);
                                     continue;
                                 }
                             }
@@ -1036,11 +1037,11 @@ public class Main{
                         if(players.get(0).getName().equals("Calamity Janet")){
                             System.out.print("You get to choose which bulls eye! (1/2)- ");
                             if((int)Math.random() * 2 == 0){
-                                System.out.println("1")
+                                System.out.println("1");
                                 bullsEyeOne(players, input, cpu);
                                 continue;
                             } else {
-                                bullsEyeTwo(players, input, cpu);
+                                bullsEyeTwo(players, livingPlayers, input,cpu);
                                 continue;
                             }
                         }
@@ -1053,16 +1054,16 @@ public class Main{
                         if(players.get(0).getName().equals("Calamity Janet")){
                             System.out.print("You get to choose which bulls eye! (1/2)- ");
                             if((int)Math.random() * 2 == 0){
-                                System.out.println("1")
+                                System.out.println("1");
                                 bullsEyeOne(players, input, cpu);
                                 continue;
                             } else {
-                                bullsEyeTwo(players, input, cpu);
+                                bullsEyeTwo(players, livingPlayers, input,cpu);
                                 continue;
                             }
                         }
                         //Normal bulls eye one
-                        bullsEyeTwo(players, input, cpu);
+                        bullsEyeTwo(players, livingPlayers, input, cpu);
                     }
                     //Handle beer
                     if(current.getFace().equals("beer")){
