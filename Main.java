@@ -790,7 +790,7 @@ public class Main{
                     if(checkPlayer(item)){
                         livingPlayers--;
                     } else {
-                        System.out.println(item.getName() + " is still alive.");
+                        System.out.println(item.getName() + " is still alive with " + item.getHealth() + "hp.");
                     }
                 }
                 System.out.println("\n===============================\n");
