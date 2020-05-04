@@ -708,6 +708,7 @@ public class Main{
                 if(!checkPlayer(players.get(c))){
                     players.get(c).health++;
                     System.out.println(cpu.getName() + " chose to heal " + players.get(c).getName() + ".");
+                    break;
                 }
             }
         }
@@ -763,7 +764,6 @@ public class Main{
                 } else if(players.get(0).sheriffs <= 0 && players.get(0).outlaws <= 0 && players.get(0).deputies <= 0 && players.get(0).renegades == 1){
                     System.out.println("The renegade is the last one standing! We've got ourselves a winner!");
                     finished = true;
-                    
                     continue;
                 } else if(players.get(0).sheriffs <= 0 && players.get(0).outlaws <= 0 && players.get(0).deputies <= 0 && players.get(0).renegades > 1){
                     System.out.println("Since there's more than 1 renegade left standing, the outlaws win!");

@@ -1,6 +1,3 @@
 Errors
-Noticed checkPlayer also printed the roles. explains why there are so many prints
-
-
-Game doesn't end when all enemies are dead
-FIX - Figuered it out. Renegades didn't check for deputies in the original ifs
+Sid is still healing everyone. :|
+FIX - Forgot to break the loop for CPU Sid's turn
