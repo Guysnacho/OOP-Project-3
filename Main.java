@@ -720,6 +720,24 @@ public class Main{
 
             //Actual game logic
             while(!finished){
+                //Check if the game is over
+                if(players.get(0).sheriffs <= 0 && players.get(0).outlaws == 0){
+                    System.out.println("Looks like the sheriff has died! All outlaws win!");
+                    finished = true;
+                    continue;
+                } else if(players.get(0).sheriffs > 0 && players.get(0).outlaws <= 0 && players.get(0).renegades <= 0){
+                    System.out.println("Looks like the outlaws and renegades have died! The Sheriff wins this time!");
+                    finished = true;
+                    continue;
+                } else if(players.get(0).sheriffs <= 0 && players.get(0).outlaws <= 0 && players.get(0).deputies <= 0 && players.get(0).renegades == 1){
+                    System.out.println("The renegade is the last one standing! We've got ourselves a winner!");
+                    finished = true;
+                    continue;
+                } else if(players.get(0).sheriffs <= 0 && players.get(0).outlaws <= 0 && players.get(0).renegades > 1){
+                    System.out.println("Since there's more than 1 renegade left standing, the outlaws win!");
+                    finished = true;
+                    continue;
+                }
                 //Gonna use this for Bulls eye dice
                 int livingPlayers = players.size();
                 for(Player item: players)
