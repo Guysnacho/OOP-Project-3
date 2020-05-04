@@ -269,8 +269,10 @@ public class Main{
                             players.get(c).arrowPile++;
                         }
                     }
-                    if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole(); vultureTime(players);
+                    if(checkPlayer(players.get(c))){
+                        players.get(c).revealRole();
+                        vultureTime(players);
+                    }
                     break;
                 }
             }
@@ -287,8 +289,10 @@ public class Main{
                             players.get(c).arrowPile++;
                         }
                     }
-                    if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole(); vultureTime(players);
+                    if(checkPlayer(players.get(c))){
+                        players.get(c).revealRole();
+                        vultureTime(players);
+                    }
                     break;
                 }
             }
@@ -314,8 +318,10 @@ public class Main{
                                         players.get(d).arrowPile++;
                                     }
                                 }
-                                if(checkPlayer(players.get(d)))
-                                    players.get(d).revealRole(); vultureTime(players);
+                                if(checkPlayer(players.get(d))){
+                                    players.get(d).revealRole();
+                                    vultureTime(players);
+                                }
                                 c = 100;
                                 System.out.println("You shot " + players.get(d).getName() + "!");
                                 break;
@@ -337,8 +343,10 @@ public class Main{
                                         players.get(d).arrowPile++;
                                     }
                                 }
-                                if(checkPlayer(players.get(d)))
-                                    players.get(d).revealRole(); vultureTime(players);
+                                if(checkPlayer(players.get(d))){
+                                    players.get(d).revealRole();
+                                    vultureTime(players);
+                                }
                                 c = 100;
                                 System.out.println("You shot " + players.get(d).getName() + "!");
                                 break;
@@ -382,8 +390,10 @@ public class Main{
                             players.get(c).arrowPile++;
                         }
                     }
-                    if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole(); vultureTime(players);
+                    if(checkPlayer(players.get(c))){
+                        players.get(c).revealRole();
+                        vultureTime(players);
+                    }
                     return;
                 }
             }
@@ -399,8 +409,10 @@ public class Main{
                             players.get(c).arrowPile++;
                         }
                     }
-                    if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole(); vultureTime(players);
+                    if(checkPlayer(players.get(c))){
+                        players.get(c).revealRole();
+                        vultureTime(players);
+                    }
                     return;
                 }
             }
@@ -422,8 +434,10 @@ public class Main{
                             players.get(c).arrowPile++;
                         }
                     }
-                    if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole(); vultureTime(players);
+                    if(checkPlayer(players.get(c))){
+                        players.get(c).revealRole();
+                        vultureTime(players);
+                    }
                     return;
                 }
             }
@@ -439,8 +453,10 @@ public class Main{
                             players.get(c).arrowPile++;
                         }
                     }
-                    if(checkPlayer(players.get(c)))
-                        players.get(c).revealRole(); vultureTime(players);
+                    if(checkPlayer(players.get(c))){
+                        players.get(c).revealRole();
+                        vultureTime(players);
+                    }
                     break;
                 }
             }
@@ -477,8 +493,10 @@ public class Main{
                                         players.get(c).arrowPile++;
                                     }
                                 }
-                                if(checkPlayer(players.get(c)))
-                                    players.get(c).revealRole(); vultureTime(players);
+                                if(checkPlayer(players.get(c))){
+                                    players.get(c).revealRole();
+                                    vultureTime(players);
+                                }
                                 return;
                             }
                         }
@@ -496,8 +514,10 @@ public class Main{
                                             players.get(d).arrowPile++;
                                         }
                                     }
-                                    if(checkPlayer(players.get(d)))
-                                        players.get(d).revealRole(); vultureTime(players);
+                                    if(checkPlayer(players.get(d))){
+                                        players.get(d).revealRole();
+                                        vultureTime(players);
+                                    }
                                     return;
                                 }
                             }
@@ -513,8 +533,10 @@ public class Main{
                                             players.get(e).arrowPile++;
                                         }
                                     }
-                                    if(checkPlayer(players.get(e)))
-                                        players.get(e).revealRole(); vultureTime(players);
+                                    if(checkPlayer(players.get(e))){
+                                        players.get(e).revealRole();
+                                        vultureTime(players);
+                                    }
                                     return;
                                 }
                             }
@@ -537,8 +559,10 @@ public class Main{
                                         players.get(c).arrowPile++;
                                     }
                                 }
-                                if(checkPlayer(players.get(c)))
-                                    players.get(c).revealRole(); vultureTime(players);
+                                if(checkPlayer(players.get(c))){
+                                    players.get(c).revealRole();
+                                    vultureTime(players);
+                                }
                                 return;
                             }
                         }
@@ -556,8 +580,10 @@ public class Main{
                                             players.get(d).arrowPile++;
                                         }
                                     }
-                                    if(checkPlayer(players.get(d)))
-                                        players.get(d).revealRole(); vultureTime(players);
+                                    if(checkPlayer(players.get(d))){
+                                        players.get(d).revealRole();
+                                        vultureTime(players);
+                                    }
                                     return;
                                 }
                             }
@@ -573,8 +599,10 @@ public class Main{
                                             players.get(e).arrowPile++;
                                         }
                                     }
-                                    if(checkPlayer(players.get(e)))
-                                        players.get(e).revealRole(); vultureTime(players);
+                                    if(checkPlayer(players.get(e))){
+                                        players.get(e).revealRole();
+                                        vultureTime(players);
+                                    }
                                     return;
                                 }
                             }
@@ -606,8 +634,10 @@ public class Main{
             }
             System.out.println(attackedPlayer.getName() + " # Minus 1 HP #");
             //Check if they're alive
-            if(checkPlayer(attackedPlayer))
-                attackedPlayer.revealRole(); vultureTime(players);
+            if(checkPlayer(attackedPlayer)){
+                attackedPlayer.revealRole();
+                vultureTime(players);
+            }
         }
     }
 
@@ -630,14 +660,16 @@ public class Main{
                         if(attackedPlayer.getName().equals("Jourdonnais")){
                             attackedPlayer.jourdArrows();
                             if(checkPlayer(attackedPlayer)){
-                                attackedPlayer.revealRole(); vultureTime(players);
+                                attackedPlayer.revealRole();
+                                vultureTime(players);
                                 continue;
                             }
                             continue;
                         }
                         attackedPlayer.dropArrow();
                         if(checkPlayer(attackedPlayer)){
-                            attackedPlayer.revealRole(); vultureTime(players);
+                            attackedPlayer.revealRole();
+                            vultureTime(players);
                             continue;
                         }
                     }
@@ -788,7 +820,8 @@ public class Main{
 
                                     if(checkPlayer(players.get(currPlayer))){
                                         livingPlayers--;
-                                        players.get(currPlayer).revealRole(); vultureTime(players);
+                                        players.get(currPlayer).revealRole();
+                                        vultureTime(players);
                                     }
                                     input.next().charAt(0);
                                     break;
@@ -821,7 +854,8 @@ public class Main{
 
                                     if(checkPlayer(players.get(currPlayer))){
                                         livingPlayers--;
-                                        players.get(currPlayer).revealRole(); vultureTime(players);
+                                        players.get(currPlayer).revealRole();
+                                        vultureTime(players);
                                     }
                                     input.next().charAt(0);
                                     break;
@@ -993,7 +1027,8 @@ public class Main{
 
                                 if(checkPlayer(cpu)){
                                     livingPlayers--;
-                                    cpu.revealRole(); vultureTime(players);
+                                    cpu.revealRole();
+                                    vultureTime(players);
                                 }
                                 input.next().charAt(0);
                                 break;
@@ -1028,7 +1063,8 @@ public class Main{
 
                                 if(checkPlayer(cpu)){
                                     livingPlayers--;
-                                    cpu.revealRole(); vultureTime(players);
+                                    cpu.revealRole();
+                                    vultureTime(players);
                                 }
                                 input.next().charAt(0);
                                 break;
