@@ -700,7 +700,7 @@ public class Main{
     }
 
     //Checks dynamite on initial roll
-    public static int checkInitDynamite(Dice[] dice, Player player){
+    public static void checkInitDynamite(Dice[] dice, Player player){
         for(Dice current: dice){
             if(current.getFace().equals("dynamite")){
                 player.dynamiteRolls++;
