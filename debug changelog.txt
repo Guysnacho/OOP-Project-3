@@ -1,8 +1,7 @@
 Errors
 Round with 3 players, only 2 active players present. I think 2 black jacks and 1 calamity janet.
 Maybe Both Black Jacks were treated as 1?
+FIX - Not true, misunderstood
 
 User had 4 dynamites but didn't get the explosion prompt or take damage
-
-Outlaws are given null roles it seems
-FIX - setRoles() set checked if players with empty roles had a role of " " instead of "".
+FIX - Fixed the dynamite issue by checking after the initial roll :)

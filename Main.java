@@ -699,6 +699,14 @@ public class Main{
         return false;
     }
 
+    //Checks dynamite on initial roll
+    public static int checkInitDynamite(Dice[] dice, Player player){
+        for(Dice current: dice){
+            if(current.getFace().equals("dynamite")){
+                player.dynamiteRolls++;
+            }
+        }
+    }
 
     //Special player abilities
     //For human sid player
@@ -817,10 +825,11 @@ public class Main{
                     System.out.print("These are your current dice - ");
                     showDice(dice);
                     checkArrows(dice, players.get(currPlayer), players);
+                    checkInitDynamite(dice, players.get(currPlayer));
 
                     //Handle rerolling
                     System.out.println("Would you like to reroll? (y/n) - ");
-                    if(input.next().charAt(0) == 'y'){
+                    if(input.next().charAt(0) == 'y' && players.get(0).dynamiteRolls > 3){
                         //Lucky Duke special
                         if(players.get(0).getName().equals("Lucky Duke")){
                             for(int c = 0; c<4;c++){
@@ -892,6 +901,27 @@ public class Main{
                             }
                         }
 
+                    } else {
+                        //If we have to skip rerolls
+                        if(players.get(currPlayer).dynamiteRolls >= 3){
+                            System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                            System.out.println("~ Minus 1 HP");
+                            players.get(currPlayer).takeHit();
+                            if(players.get(currPlayer).getName().equals("Pedro Ramirez")){
+                                if(players.get(currPlayer).arrows > 0){
+                                    System.out.println("Pedro dropped an arrow!");
+                                    players.get(currPlayer).arrows--;
+                                    players.get(currPlayer).arrowPile++;
+                                }
+                            }
+
+                            if(checkPlayer(players.get(currPlayer))){
+                                livingPlayers--;
+                                players.get(currPlayer).revealRole();
+                                vultureTime(players);
+                            }
+                            input.next().charAt(0);
+                        }
                     }
 
                     //End of player interaction, now we resolve dice
@@ -1013,6 +1043,7 @@ public class Main{
                 System.out.print("These are the current dice - ");
                 showDice(dice);
                 checkArrows(dice, cpu, players);
+                checkInitDynamite(dice, cpu);
                 if(checkPlayer(cpu)){
                     System.out.println("Since " + cpu.getName() + "has been eliminated, we'll be ending their turn here.");
                     return;
@@ -1020,7 +1051,7 @@ public class Main{
 
                 //Handle rerolling for CPU, randomly
                 System.out.print("Would you like to reroll? - ");
-                if((int)(Math.random() * 11) < 4){
+                if((int)(Math.random() * 11) < 4 && cpu.dynamiteRolls < 3){
                     System.out.println("Oh yeah partner!");
                     //Lucky Duke Special
                     if(players.get(0).getName().equals("Lucky Duke")){
@@ -1097,6 +1128,24 @@ public class Main{
                         }
                     }
 
+                } else if(cpu.dynamiteRolls >= 3){
+                    System.out.println("Sorry, too many dynamites! ## KABLAM ##");
+                    System.out.println("~ Minus 1 HP");
+                    cpu.takeHit();
+                    if(cpu.getName().equals("Pedro Ramirez")){
+                        if(cpu.arrows > 0){
+                            System.out.println("Pedro dropped an arrow!");
+                            cpu.arrows--;
+                            cpu.arrowPile++;
+                        }
+                    }
+
+                    if(checkPlayer(cpu)){
+                        livingPlayers--;
+                        cpu.revealRole();
+                        vultureTime(players);
+                    }
+                    input.next().charAt(0);
                 } else {
                     System.out.println("No thanks");
                 }
