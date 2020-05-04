@@ -2,8 +2,4 @@ Errors
 Round with 3 players, only 2 active players present. I think 2 black jacks and 1 calamity janet.
 Maybe Both Black Jacks were treated as 1?
 
-Indian attack but no one took damage
-FIX - Added a print statement to prompt the user
-
-No prompt when calamity janet died. Sheriff won. Win conditions working
-FIX - Adding a prompt at the start of every round showing living players
+Player's role wasn't set at the start
