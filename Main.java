@@ -121,7 +121,7 @@ public class Main{
                 //We need 2 outlaws
                 current = (int)(Math.random() * (players.size()));
                 for(Player item: players){
-                    if(item.getRole().equals(" "))
+                    if(item.getRole().equals(""))
                         item.setRole("Outlaw");
                 }
                 return;
