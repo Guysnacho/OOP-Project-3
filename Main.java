@@ -651,7 +651,7 @@ public class Main{
                 if(currPlayer.getPile() == 0){
 
                     //Display - Launch indian attack
-                    System.out.println("## Look out! INDIAN ATTACK!! ##");
+                    System.out.println("## Look out! INDIAN ATTACK!! ##\n");
                     for(Player attackedPlayer:players){
                         if(checkPlayer(attackedPlayer))
                             continue;
@@ -659,6 +659,7 @@ public class Main{
                         //Jourdonnais Ability
                         if(attackedPlayer.getName().equals("Jourdonnais")){
                             attackedPlayer.jourdArrows();
+                            System.out.println(attackedPlayer.getName() + " took 1 damage");
                             if(checkPlayer(attackedPlayer)){
                                 attackedPlayer.revealRole();
                                 vultureTime(players);
@@ -666,7 +667,9 @@ public class Main{
                             }
                             continue;
                         }
+
                         attackedPlayer.dropArrow();
+                        System.out.println(attackedPlayer.getName() + " took 1 damage");
                         if(checkPlayer(attackedPlayer)){
                             attackedPlayer.revealRole();
                             vultureTime(players);
@@ -773,9 +776,13 @@ public class Main{
                 //Gonna use this for Bulls eye dice
                 int livingPlayers = players.size();
                 for(Player item: players){
-                    if(checkPlayer(item))
+                    if(checkPlayer(item)){
                         livingPlayers--;
+                    } else {
+                        System.out.println(item.getName() + " is still alive.");
+                    }
                 }
+                System.out.println("\n===============================\n");
 
                 //Final check if all
                 for(Player item: players){
