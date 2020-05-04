@@ -942,12 +942,6 @@ public class Main{
                         continue;
                     cpuSim(expanVersion, players, input, cpu);
                 }
-
-                //##Testing##
-                int playercount = 0;
-                for(Player item:players)
-                    if(playercount < 2)
-                        finished = true;
             }
         }
     }
@@ -982,7 +976,7 @@ public class Main{
                         livingPlayers--;
 
                 //Checks if its sid's turn
-                if(players.get(0).getName().equals("Sid Ketchum"))
+                if(cpu.getName().equals("Sid Ketchum"))
                     sidTurn(players, cpu);
 
                 //Button interactions will be noted with next().charAt(0);
