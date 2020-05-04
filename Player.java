@@ -6,6 +6,7 @@
 public class Player{
     //Attributes
     public static int arrowPile;
+    public static int renegades, sheriffs, outlaws, deputies;
     //Removed initHealth because we never actually used it
     public int health, initHealth;
     public int arrows;
@@ -62,10 +63,31 @@ public class Player{
 
     public String getRole(){return attributes[1];}
 
-    public void setRole(String role){attributes[1]=role;}
+    public void setRole(String role){
+        attributes[1]=role;
+        if(role.equals("Deputy")){
+            deputies++;
+        } else if(role.equals("Outlaw")){
+            outlaws++;
+        } else if(role.equals("Renegade")){
+            renegades++;
+        } else if(role.equals("Sheriff")){
+            sheriffs++;
+        }
+    }
 
     public void revealRole() {
         System.out.println(getName() + " has been eliminated");
         System.out.println(getName() + " was a " + getRole());
+
+        if(getRole().equals("Deputy")){
+            deputies--;
+        } else if(getRole().equals("Outlaw")){
+            outlaws--;
+        } else if(getRole().equals("Renegade")){
+            renegades--;
+        } else if(getRole().equals("Sheriff")){
+            sheriffs--;
+        }
     }
 }
