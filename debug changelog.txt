@@ -1,8 +1,6 @@
 Errors
-Jesse Jones is healing other players
-Lucky Duke is also healing other players.
-Everyone has Sid's ability when he's present, check ifs. Also heals 3 times instead of once
-Maybe its healing every player present. More likely than randomly choosing every player
-FIX - Instead of checking the cpu's name I checked the player so technically "everyone" was Sid Ketchum if that makes sense
+Noticed checkPlayer also printed the roles. explains why there are so many prints
+
 
 Game doesn't end when all enemies are dead
+FIX - Figuered it out. Renegades didn't check for deputies in the original ifs

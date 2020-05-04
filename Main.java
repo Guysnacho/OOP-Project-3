@@ -683,8 +683,7 @@ public class Main{
     //Checks if the current player is still alive, if they are dead, it returns true. else false VERY IMPORTANT, DONT CHANGE
     public static boolean checkPlayer(Player currPlayer){
         if(currPlayer.health <= 0){
-            currPlayer.revealRole();
-            //Return if they're alive
+            //Return if they're dead
             return true;
         }
         return false;
@@ -765,16 +764,23 @@ public class Main{
                     System.out.println("The renegade is the last one standing! We've got ourselves a winner!");
                     finished = true;
                     continue;
-                } else if(players.get(0).sheriffs <= 0 && players.get(0).outlaws <= 0 && players.get(0).renegades > 1){
+                } else if(players.get(0).sheriffs <= 0 && players.get(0).outlaws <= 0 && players.get(0).deputies <= 0 && players.get(0).renegades > 1){
                     System.out.println("Since there's more than 1 renegade left standing, the outlaws win!");
                     finished = true;
                     continue;
                 }
                 //Gonna use this for Bulls eye dice
                 int livingPlayers = players.size();
-                for(Player item: players)
+                for(Player item: players){
                     if(checkPlayer(item))
                         livingPlayers--;
+                }
+
+                //Final check if all
+                for(Player item: players){
+                    if(checkPlayer(item))
+                        livingPlayers--;
+                }
 
                 //Check if the main player is alive
                 if(checkPlayer(players.get(0))){
