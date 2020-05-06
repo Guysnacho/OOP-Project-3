@@ -9,6 +9,7 @@ public class Dice{
     String[] faces = new String[6];
     int currentFace;
     int type;
+    boolean isLoudmouth, isCoward;
     public Dice(int selection){
         type = selection;
         switch(selection){
@@ -60,6 +61,16 @@ public class Dice{
     public void roll(){ currentFace = (int)(Math.random() * 6); }
 
     public String getFace(){ return faces[currentFace]; }
+
+    public void setSaloon(int selection){
+        if(selection == 0){
+            isLoudmouth = true;
+            isCoward = false;
+        } else {
+            isLoudmouth = false;
+            isCoward = true;
+        }
+    }
 
     public String toString(){
         String export = "";
